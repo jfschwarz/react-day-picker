@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions, react/forbid-prop-types */
 
 import React, { PropTypes } from 'react';
+import defaultStyle from 'substyle';
 
 function handleEvent(handler, day, modifiers) {
   if (!handler) {
@@ -13,7 +14,7 @@ function handleEvent(handler, day, modifiers) {
     handler(e, day, dayState);
   };
 }
-export default function Day({
+function Day({
   day,
   tabIndex,
   empty,
@@ -29,15 +30,14 @@ export default function Day({
   ariaDisabled,
   ariaSelected,
   children,
+  style,
 }) {
-  let className = 'DayPicker-Day';
-  className += modifiers.map(modifier => ` ${className}--${modifier}`).join('');
   if (empty) {
-    return <div role="gridcell" aria-disabled className={ className } />;
+    return <div role="gridcell" aria-disabled { ...style } />;
   }
   return (
     <div
-      className={ className }
+      { ...style }
       tabIndex={ tabIndex }
       role="gridcell"
       aria-label={ ariaLabel }
@@ -73,9 +73,39 @@ Day.propTypes = {
   onTouchStart: PropTypes.func,
   onFocus: PropTypes.func,
   tabIndex: PropTypes.number,
+  style: PropTypes.func.isRequired,
 };
 
 Day.defaultProps = {
   modifiers: [],
   empty: false,
 };
+
+const styled = defaultStyle({
+  display: 'table-cell',
+  padding: '.5rem',
+  border: '1px solid #eaecec',
+  textAlign: 'center',
+  cursor: 'pointer',
+  verticalAlign: 'middle',
+
+  '&today': {
+    color: '#d0021b',
+    fontWeight: 500,
+  },
+
+  '&disabled': {
+    color: '#dce0e0',
+    cursor: 'default',
+    backgroundColor: '#eff1f1',
+  },
+
+  '&outside': {
+    cursor: 'default',
+    color: '#dce0e0',
+  },
+}, ({ modifiers }) => (
+  modifiers.map(modifier => `&${modifier}`)
+));
+
+export default styled(Day);

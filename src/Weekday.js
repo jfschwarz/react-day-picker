@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
+import defaultStyle from 'substyle';
 import DayPickerPropTypes from './PropTypes';
 
-export default function Weekday({
+function Weekday({
   weekday,
-  className,
+  style,
   weekdaysLong,
   weekdaysShort,
   localeUtils,
@@ -23,8 +24,8 @@ export default function Weekday({
   }
 
   return (
-    <div className={ className }>
-      <abbr title={ title }>
+    <div { ...style }>
+      <abbr { ...style('abbr') } title={ title }>
         {content}
       </abbr>
     </div>
@@ -33,7 +34,7 @@ export default function Weekday({
 
 export const WeekdayPropTypes = {
   weekday: PropTypes.number,
-  className: PropTypes.string,
+  style: PropTypes.func.isRequired,
   locale: PropTypes.string,
   localeUtils: DayPickerPropTypes.localeUtils,
 
@@ -42,3 +43,13 @@ export const WeekdayPropTypes = {
 };
 
 Weekday.propTypes = WeekdayPropTypes;
+
+const styled = defaultStyle({
+  display: 'table-cell',
+  padding: '.5rem',
+  fontSize: '.875em',
+  textAlign: 'center',
+  color: '#8b9898',
+});
+
+export default styled(Weekday);

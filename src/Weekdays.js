@@ -1,13 +1,15 @@
 import React, { PropTypes } from 'react';
+import defaultStyle from 'substyle';
 import DayPickerPropTypes from './PropTypes';
 
-export default function Weekdays({
+function Weekdays({
   firstDayOfWeek,
   weekdaysLong,
   weekdaysShort,
   locale,
   localeUtils,
   weekdayElement,
+  style,
 }) {
   const days = [];
   for (let i = 0; i < 7; i += 1) {
@@ -26,8 +28,8 @@ export default function Weekdays({
   }
 
   return (
-    <div className="DayPicker-Weekdays" role="rowgroup">
-      <div className="DayPicker-WeekdaysRow" role="columnheader">
+    <div { ...style } role="rowgroup">
+      <div { ...style('row') } role="columnheader">
         {days}
       </div>
     </div>
@@ -41,4 +43,15 @@ Weekdays.propTypes = {
   locale: PropTypes.string.isRequired,
   localeUtils: DayPickerPropTypes.localeUtils.isRequired,
   weekdayElement: PropTypes.element,
+  style: PropTypes.func.isRequired,
 };
+
+const styled = defaultStyle({
+  display: 'table-header-group',
+
+  row: {
+    display: 'table-row',
+  },
+});
+
+export default styled(Weekdays);

@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import defaultStyle from 'substyle';
+
 import Caption from './Caption';
 import Navbar from './Navbar';
 import Month from './Month';
@@ -12,7 +14,7 @@ import * as LocaleUtils from './LocaleUtils';
 import keys from './keys';
 import DayPickerPropTypes from './PropTypes';
 
-export default class DayPicker extends Component {
+class DayPicker extends Component {
   static VERSION = '3.1.1';
 
   static propTypes = {
@@ -57,7 +59,7 @@ export default class DayPicker extends Component {
     captionElement: PropTypes.element,
 
     dir: PropTypes.string,
-    className: PropTypes.string,
+    style: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
 
   };
@@ -352,7 +354,7 @@ export default class DayPicker extends Component {
 
     if (!canChangeMonth) return null;
     const props = {
-      className: 'DayPicker-NavBar',
+      style: this.props.style('navbar'),
       nextMonth: this.getNextNavigableMonth(),
       previousMonth: this.getPreviousNavigableMonth(),
       showPreviousButton: this.allowPreviousMonth(),
@@ -408,6 +410,8 @@ export default class DayPicker extends Component {
         onTouchEnd={ this.props.onDayTouchEnd }
         onFocus={ this.props.onDayFocus }
         onClick={ this.props.onDayClick ? this.handleDayClick : undefined }
+
+        style={ this.props.style('day') }
       >
         {this.props.renderDay(day)}
       </Day>
@@ -433,15 +437,13 @@ export default class DayPicker extends Component {
           firstDayOfWeek={ firstDayOfWeek }
           fixedWeeks={ this.props.fixedWeeks }
 
-          className="DayPicker-Month"
-          wrapperClassName="DayPicker-Body"
-          weekClassName="DayPicker-Week"
-
           weekdayComponent={ this.props.weekdayComponent }
           weekdayElement={ this.props.weekdayElement }
           captionElement={ this.props.captionElement }
 
           onCaptionClick={ this.props.onCaptionClick }
+
+          style={ this.props.style('month') }
         >
           {this.renderDayInMonth}
         </Month>);
@@ -455,19 +457,11 @@ export default class DayPicker extends Component {
 
   render() {
     const customProps = Helpers.getCustomProps(this.props, DayPicker.propTypes);
-    let className = `DayPicker DayPicker--${this.props.locale}`;
-
-    if (!this.props.onDayClick) {
-      className = `${className} DayPicker--interactionDisabled`;
-    }
-    if (this.props.className) {
-      className = `${className} ${this.props.className}`;
-    }
 
     return (
       <div
         { ...customProps }
-        className={ className }
+        { ...this.props.style }
         ref={ (el) => { this.dayPicker = el; } }
         role="application"
         tabIndex={ this.props.canChangeMonth && this.props.tabIndex }
@@ -479,3 +473,23 @@ export default class DayPicker extends Component {
     );
   }
 }
+
+const styled = defaultStyle({
+  display: 'flex',
+  flexWrap: 'wrap',
+  justifyContent: 'center',
+  position: 'relative',
+  padding: '1rem 0',
+  userSelect: 'none',
+
+  '&interactionDisabled': {
+    day: {
+      cursor: 'default',
+    },
+  },
+}, ({ locale, onDayClick }) => ({
+  [`&${locale}`]: !!locale,
+  '&interactionDisabled': !onDayClick,
+}));
+
+export default styled(DayPicker);

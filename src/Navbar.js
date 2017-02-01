@@ -1,9 +1,8 @@
 import React, { PropTypes } from 'react';
+import defaultStyle from 'substyle';
 
-const buttonBaseClass = 'DayPicker-NavButton DayPicker-NavButton';
-
-export default function Navbar({
-  className,
+function Navbar({
+  style,
   showPreviousButton,
   showNextButton,
   onPreviousClick,
@@ -17,27 +16,27 @@ export default function Navbar({
     <span
       role="button"
       key="previous"
-      className={ `${buttonBaseClass}--prev` }
+      { ...style(['button', 'buttonPrev']) }
       onClick={ () => previousClickHandler() }
-    />;
+    >&#x3008;</span>;
 
   const nextButton = showNextButton &&
     <span
       role="button"
       key="right"
-      className={ `${buttonBaseClass}--next` }
+      { ...style(['button', 'buttonNext']) }
       onClick={ () => nextClickHandler() }
-    />;
+    >&#x3009;</span>;
 
   return (
-    <div className={ className }>
+    <div { ...style }>
       {dir === 'rtl' ? [nextButton, previousButton] : [previousButton, nextButton]}
     </div>
   );
 }
 
 export const NavbarPropTypes = {
-  className: PropTypes.string,
+  style: PropTypes.func.isRequired,
   showPreviousButton: PropTypes.bool,
   showNextButton: PropTypes.bool,
   onPreviousClick: PropTypes.func,
@@ -48,8 +47,33 @@ export const NavbarPropTypes = {
 Navbar.propTypes = NavbarPropTypes;
 
 Navbar.defaultProps = {
-  className: 'DayPicker-NavBar',
   dir: 'ltr',
   showPreviousButton: true,
   showNextButton: true,
 };
+
+const styled = defaultStyle({
+  position: 'absolute',
+  left: 0,
+  right: 0,
+
+  button: {
+    position: 'absolute',
+    width: '1.5rem',
+    height: '1.5rem',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    backgroundSize: 'contain',
+    cursor: 'pointer',
+  },
+
+  buttonPrev: {
+    left: '1rem',
+  },
+
+  buttonNext: {
+    right: '1rem',
+  },
+});
+
+export default styled(Navbar);

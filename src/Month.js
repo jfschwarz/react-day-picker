@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
+import defaultStyle from 'substyle';
 import DayPickerPropTypes from './PropTypes';
 import Weekdays from './Weekdays';
 import { getWeekArray } from './Helpers';
 
-export default function Month({
+function Month({
   month,
   months,
   weekdaysLong,
@@ -14,9 +15,7 @@ export default function Month({
   onCaptionClick,
   children,
   firstDayOfWeek,
-  className,
-  wrapperClassName,
-  weekClassName,
+  style,
   weekdayElement,
   fixedWeeks,
 }) {
@@ -29,7 +28,7 @@ export default function Month({
   };
   const weeks = getWeekArray(month, firstDayOfWeek, fixedWeeks);
   return (
-    <div className={ className }>
+    <div { ...style }>
       {React.cloneElement(captionElement, captionProps)}
       <Weekdays
         weekdaysShort={ weekdaysShort }
@@ -38,11 +37,12 @@ export default function Month({
         locale={ locale }
         localeUtils={ localeUtils }
         weekdayElement={ weekdayElement }
+        style={ style('weekdays') }
       />
-      <div className={ wrapperClassName } role="grid">
+      <div { ...style('body') } role="grid">
         {
           weeks.map((week, j) =>
-            <div key={ j } className={ weekClassName } role="gridcell">
+            <div key={ j } { ...style('week') } role="gridcell">
               {week.map(day => children(day, month))}
             </div>,
         )}
@@ -62,9 +62,25 @@ Month.propTypes = {
   localeUtils: DayPickerPropTypes.localeUtils.isRequired,
   onCaptionClick: PropTypes.func,
   children: PropTypes.func.isRequired,
-  className: PropTypes.string,
-  wrapperClassName: PropTypes.string,
-  weekClassName: PropTypes.string,
+  style: PropTypes.func.isRequired,
   weekdayElement: PropTypes.element,
   fixedWeeks: PropTypes.bool,
 };
+
+const styled = defaultStyle({
+  display: 'table',
+  borderCollapse: 'collapse',
+  borderSpacing: 0,
+  userSelect: 'none',
+  margin: '0 1rem',
+
+  body: {
+    display: 'table-row-group',
+  },
+
+  week: {
+    display: 'table-row',
+  },
+});
+
+export default styled(Month);
