@@ -29,6 +29,7 @@ function Day({
   ariaLabel,
   ariaDisabled,
   ariaSelected,
+  dataDayInside,
   children,
   style,
 }) {
@@ -40,6 +41,7 @@ function Day({
       { ...style }
       tabIndex={ tabIndex }
       role="gridcell"
+      data-dayInside={ dataDayInside }
       aria-label={ ariaLabel }
       aria-disabled={ ariaDisabled.toString() }
       aria-selected={ ariaSelected.toString() }
@@ -60,6 +62,7 @@ Day.propTypes = {
   day: PropTypes.instanceOf(Date).isRequired,
   children: PropTypes.node.isRequired,
 
+  dataDayInside: PropTypes.bool,
   ariaDisabled: PropTypes.bool,
   ariaLabel: PropTypes.string,
   ariaSelected: PropTypes.bool,

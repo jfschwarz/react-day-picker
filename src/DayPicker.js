@@ -116,7 +116,7 @@ class DayPicker extends Component {
   }
 
   getDayNodes() {
-    return this.dayPicker.querySelectorAll('.DayPicker-Day:not(.DayPicker-Day--outside)');
+    return this.dayPicker.querySelectorAll('[data-dayinside]');
   }
 
   getNextNavigableMonth() {
@@ -393,6 +393,7 @@ class DayPicker extends Component {
     return (
       <Day
         key={ `${isOutside ? 'outside-' : ''}${key}` }
+        dataDayInside={ !isOutside }
         day={ day }
         modifiers={ dayModifiers }
         empty={ isOutside && !this.props.enableOutsideDays && !this.props.fixedWeeks }
