@@ -16,7 +16,7 @@ function Navbar({
     <span
       role="button"
       key="previous"
-      { ...style(['button', 'buttonPrev']) }
+      { ...style('button')('&prev') }
       onClick={ () => previousClickHandler() }
     >&#x3008;</span>;
 
@@ -24,7 +24,7 @@ function Navbar({
     <span
       role="button"
       key="right"
-      { ...style(['button', 'buttonNext']) }
+      { ...style('button')('&next') }
       onClick={ () => nextClickHandler() }
     >&#x3009;</span>;
 
@@ -61,18 +61,15 @@ const styled = defaultStyle({
     position: 'absolute',
     width: '1.5rem',
     height: '1.5rem',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    backgroundSize: 'contain',
     cursor: 'pointer',
-  },
 
-  buttonPrev: {
-    left: '1rem',
-  },
+    '&prev': {
+      left: '1rem',
+    },
 
-  buttonNext: {
-    right: '1rem',
+    '&next': {
+      right: '1rem',
+    },
   },
 });
 
