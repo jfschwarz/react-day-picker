@@ -24,7 +24,6 @@ Caption.propTypes = {
 
 const styled = defaultStyle({
   display: 'table-caption',
-  height: '1.5rem',
   textAlign: 'center',
 });
 

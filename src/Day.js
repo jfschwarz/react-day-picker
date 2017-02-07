@@ -86,26 +86,19 @@ Day.defaultProps = {
 
 const styled = defaultStyle({
   display: 'table-cell',
-  padding: '.5rem',
-  border: '1px solid #eaecec',
-  textAlign: 'center',
   cursor: 'pointer',
   verticalAlign: 'middle',
 
   '&today': {
-    color: '#d0021b',
     fontWeight: 500,
   },
 
   '&disabled': {
-    color: '#dce0e0',
     cursor: 'default',
-    backgroundColor: '#eff1f1',
   },
 
   '&outside': {
     cursor: 'default',
-    color: '#dce0e0',
   },
 }, ({ modifiers }) => (
   modifiers.map(modifier => `&${modifier}`)

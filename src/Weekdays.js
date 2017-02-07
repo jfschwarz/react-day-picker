@@ -16,12 +16,12 @@ function Weekdays({
     const weekday = (i + firstDayOfWeek) % 7;
     const elementProps = {
       key: i,
-      className: 'DayPicker-Weekday',
       weekday,
       weekdaysLong,
       weekdaysShort,
       localeUtils,
       locale,
+      ...style('weekday'),
     };
     const element = React.cloneElement(weekdayElement, elementProps);
     days.push(element);

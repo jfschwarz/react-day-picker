@@ -1,8 +1,8 @@
 import React from 'react';
 import DayPicker from '../../../src';
 
-import '../../../src/style.css';
+import style from '../../../src/style';
 
 export default function SimpleCalendar() {
-  return <DayPicker className="DayPicker" onDayClick={ (e, day) => window.alert(day) } />;
+  return <DayPicker style={ style } className="dp" onDayClick={ (e, day) => window.alert(day) } />;
 }

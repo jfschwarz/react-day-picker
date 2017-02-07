@@ -46,10 +46,7 @@ Weekday.propTypes = WeekdayPropTypes;
 
 const styled = defaultStyle({
   display: 'table-cell',
-  padding: '.5rem',
-  fontSize: '.875em',
   textAlign: 'center',
-  color: '#8b9898',
 });
 
 export default styled(Weekday);

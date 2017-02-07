@@ -10,3 +10,5 @@ export const WeekdayPropTypes = Weekday.PropTypes;
 export const NavbarPropTypes = Navbar.PropTypes;
 
 export PropTypes from './PropTypes';
+
+export style from './style'

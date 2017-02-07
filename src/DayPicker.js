@@ -476,11 +476,7 @@ class DayPicker extends Component {
 }
 
 const styled = defaultStyle({
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'center',
   position: 'relative',
-  padding: '1rem 0',
   userSelect: 'none',
 
   '&interactionDisabled': {

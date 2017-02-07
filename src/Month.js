@@ -25,6 +25,7 @@ function Month({
     localeUtils,
     locale,
     onClick: onCaptionClick ? e => onCaptionClick(e, month) : undefined,
+    ...style('caption'),
   };
   const weeks = getWeekArray(month, firstDayOfWeek, fixedWeeks);
   return (
