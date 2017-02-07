@@ -1,14 +1,14 @@
-.DayPicker-Day--odd:not(.DayPicker-Day--outside) {
+.daypicker__day--odd:not(.daypicker__day--outside) {
   background-color: red;
   color: white;
 }
 
-.DayPicker-Day--even:not(.DayPicker-Day--outside) {
+.daypicker__day--even:not(.daypicker__day--outside) {
   background-color: blue;
   color: white;
 }
 
-.DayPicker-Day--blahblah:not(.DayPicker-Day--outside) {
+.daypicker__day--blahblah:not(.daypicker__day--outside) {
   background-color: black;
   color: white;
 }

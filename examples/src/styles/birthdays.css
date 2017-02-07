@@ -1,4 +1,4 @@
-.Birthdays .DayPicker-Caption {
+.Birthdays .daypicker__caption {
   font-weight: 300;
   font-size: 2rem;
   height: auto;
@@ -6,11 +6,11 @@
   color: #a6b0b0;
 }
 
-.Birthdays .DayPicker-Weekday {
+.Birthdays .daypicker__month__weekdays__weekday {
   text-align: right;
 }
 
-.Birthdays .DayPicker-Day {
+.Birthdays .daypicker__day {
 
   width: 72px;
   height: 64px;

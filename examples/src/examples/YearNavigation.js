@@ -22,7 +22,7 @@ function YearMonthForm({ date, localeUtils, onChange }) {
   };
 
   return (
-    <form className="DayPicker-Caption">
+    <form className="daypicker__caption">
       <select name="month" onChange={ handleChange } value={ date.getMonth() }>
         { months.map((month, i) =>
           <option key={ i } value={ i }>

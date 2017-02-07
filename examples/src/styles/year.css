@@ -15,11 +15,11 @@
   margin: 0 1rem;
 }
 
-.YearCalendar .DayPicker-Month {
+.YearCalendar .daypicker__month {
   margin-bottom: 2rem;
 }
 
-.YearCalendar .DayPicker-Caption {
+.YearCalendar .YearCalendar-Caption {
   font-weight: 400;
   color: #a6b0b0;
 }

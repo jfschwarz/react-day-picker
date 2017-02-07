@@ -91,7 +91,7 @@ select {
   background-repeat: no-repeat;
 }
 
-.DayPicker-Caption select {
+.daypicker__caption select {
   border: 0;
   width: auto;
   margin-top: -0.35rem;

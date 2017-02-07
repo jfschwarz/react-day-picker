@@ -68,7 +68,7 @@ export default class RangeAdvanced extends React.Component {
   render() {
     const { from, to } = this.state;
     return (
-      <div>
+      <div className="Range">
         { !from && !to && <p>Please select the <strong>first day</strong>.</p> }
         { from && !to && <p>Please select the <strong>last day</strong>.</p> }
         { from && to &&
@@ -78,7 +78,7 @@ export default class RangeAdvanced extends React.Component {
           </p>
         }
         <DayPicker
-          className="Range"
+          className="daypicker"
           numberOfMonths={ 2 }
           fromMonth={ from }
           selectedDays={ day => DateUtils.isDayInRange(day, { from, to }) }
