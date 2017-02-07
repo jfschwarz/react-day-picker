@@ -20,6 +20,7 @@ export default class SelectableDay extends React.Component {
     return (
       <div>
         <DayPicker
+          className="daypicker"
           selectedDays={ day => DateUtils.isSameDay(selectedDay, day) }
           onDayClick={ this.handleDayClick }
         />

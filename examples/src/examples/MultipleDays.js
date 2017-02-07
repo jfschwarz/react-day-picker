@@ -32,6 +32,7 @@ export default class MultipleDays extends React.Component {
     return (
       <div>
         <DayPicker
+          className="daypicker"
           selectedDays={ this.isDaySelected }
           onDayClick={ this.handleDayClick }
         />

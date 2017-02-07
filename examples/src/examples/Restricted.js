@@ -9,6 +9,7 @@ const toMonth = new Date(2015, 10, 30, 23, 59);
 export default function Restricted() {
   return (
     <DayPicker
+      className="daypicker"
       enableOutsideDays
       numberOfMonths={ 2 }
       initialMonth={ fromMonth }

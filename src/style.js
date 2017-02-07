@@ -37,6 +37,8 @@ export default {
       },
       row: {},
     },
+
+    body: {},
   },
 
   navbar: {

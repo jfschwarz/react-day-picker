@@ -51,6 +51,7 @@ export default class YearNavigation extends React.Component {
     return (
       <div className="YearNavigation">
         <DayPicker
+          className="daypicker"
           initialMonth={ this.state.initialMonth }
           fromMonth={ fromMonth }
           toMonth={ toMonth }

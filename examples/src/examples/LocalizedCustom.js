@@ -57,6 +57,7 @@ export default class LocalizedCustom extends React.Component {
           </select>
         </p>
         <DayPicker
+          className="daypicker"
           locale={ locale }
           localeUtils={ localeUtils }
           modifiers={ { sunday: day => day.getDay() === 0 } }

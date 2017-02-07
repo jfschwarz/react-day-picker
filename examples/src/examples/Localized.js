@@ -14,6 +14,7 @@ export default function Localized() {
   return (
     <div>
       <DayPicker
+        className="daypicker"
         locale="it"
         months={ MONTHS }
         weekdaysLong={ WEEKDAYS_LONG }

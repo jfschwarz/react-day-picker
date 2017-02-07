@@ -38,6 +38,7 @@ export default class Range extends React.Component {
           </p>
         }
         <DayPicker
+          className="daypicker"
           numberOfMonths={ 2 }
           selectedDays={ day => DateUtils.isDayInRange(day, { from, to }) }
           onDayClick={ this.handleDayClick }
