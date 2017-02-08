@@ -75,6 +75,10 @@ const styled = defaultStyle({
   userSelect: 'none',
   margin: '0 1rem',
 
+  caption: {
+    display: 'table-caption',
+  },
+
   body: {
     display: 'table-row-group',
   },

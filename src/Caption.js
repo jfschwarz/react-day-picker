@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
-import defaultStyle from 'substyle';
 import DayPickerPropTypes from './PropTypes';
 
-function Caption({ date, months, locale, localeUtils, onClick, style }) {
+export default function Caption({ date, months, locale, localeUtils, onClick, className, style }) {
   return (
-    <div { ...style } onClick={ onClick } role="heading">
+    <div { ...{ className, style, onClick } } role="heading">
       { months ?
         `${months[date.getMonth()]} ${date.getFullYear()}` :
         localeUtils.formatMonthTitle(date, locale)
@@ -19,12 +18,6 @@ Caption.propTypes = {
   locale: PropTypes.string,
   localeUtils: DayPickerPropTypes.localeUtils,
   onClick: PropTypes.func,
-  style: PropTypes.func.isRequired,
+  style: PropTypes.object,
+  className: PropTypes.string,
 };
-
-const styled = defaultStyle({
-  display: 'table-caption',
-  textAlign: 'center',
-});
-
-export default styled(Caption);

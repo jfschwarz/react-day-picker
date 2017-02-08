@@ -8,7 +8,7 @@ const fromMonth = new Date(currentYear, 0, 1, 0, 0);
 const toMonth = new Date(currentYear + 10, 11, 31, 23, 59);
 
 // Component will receive date, locale and localeUtils props
-function YearMonthForm({ date, localeUtils, onChange }) {
+function YearMonthForm({ date, localeUtils, onChange, className, style }) {
   const months = localeUtils.getMonths();
 
   const years = [];
@@ -22,7 +22,7 @@ function YearMonthForm({ date, localeUtils, onChange }) {
   };
 
   return (
-    <form className="daypicker__caption">
+    <form className={className} style={style}>
       <select name="month" onChange={ handleChange } value={ date.getMonth() }>
         { months.map((month, i) =>
           <option key={ i } value={ i }>
