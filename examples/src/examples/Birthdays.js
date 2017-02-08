@@ -34,5 +34,5 @@ function renderDay(day) {
 }
 
 export default function Birthdays() {
-  return <DayPicker canChangeMonth={ false } className="Birthdays" renderDay={ renderDay } />;
+  return <DayPicker className="daypicker" canChangeMonth={ false } className="Birthdays" renderDay={ renderDay } />;
 }

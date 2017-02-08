@@ -34,12 +34,6 @@
         right: 1rem;
       }
 
-  .daypicker__caption {
-    display: table-caption;
-    height: 1.5rem;
-    text-align: center;
-  }
-
   .daypicker__month {
     display: table;
     border-collapse: collapse;
@@ -47,6 +41,11 @@
     user-select: none;
     margin: 0 1rem;
   }
+    .daypicker__month__caption {
+      display: table-caption;
+      height: 1.5rem;
+      text-align: center;
+    }
 
     .daypicker__month__weekdays {
       display: table-header-group;
