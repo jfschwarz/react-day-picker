@@ -350,7 +350,8 @@ class DayPicker extends Component {
       localeUtils,
       canChangeMonth,
       navbarElement,
-    ...attributes } = this.props;
+      ...attributes
+    } = this.props;
 
     if (!canChangeMonth) return null;
     const props = {

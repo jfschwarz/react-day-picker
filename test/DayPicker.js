@@ -341,7 +341,7 @@ describe('<DayPicker />', () => {
     it('should call the `onMonthChange` handler', () => {
       const handleMonthChange = spy();
       const instance = mount(
-        <DayPicker onMonthChange={ handleMonthChange } />
+        <DayPicker onMonthChange={ handleMonthChange } />,
       ).instance().getWrappedInstance();
       instance.showPreviousYear();
       expect(handleMonthChange).to.have.been.calledWith(instance.state.currentMonth);
@@ -365,7 +365,7 @@ describe('<DayPicker />', () => {
   describe('showMonth()', () => {
     it('should show the specified month', () => {
       const instance = mount(
-        <DayPicker initialMonth={ new Date(2015, 5, 4) } />
+        <DayPicker initialMonth={ new Date(2015, 5, 4) } />,
       ).instance().getWrappedInstance();
       instance.showMonth(new Date(2016, 1, 15));
       expect(instance.state.currentMonth.getFullYear()).to.equal(2016);
