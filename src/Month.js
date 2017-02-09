@@ -73,7 +73,6 @@ const styled = defaultStyle({
   borderCollapse: 'collapse',
   borderSpacing: 0,
   userSelect: 'none',
-  margin: '0 1rem',
 
   caption: {
     display: 'table-caption',

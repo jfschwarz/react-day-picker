@@ -64,11 +64,11 @@ const styled = defaultStyle({
     cursor: 'pointer',
 
     '&prev': {
-      left: '1rem',
+      left: 0,
     },
 
     '&next': {
-      right: '1rem',
+      right: 0,
     },
   },
 });

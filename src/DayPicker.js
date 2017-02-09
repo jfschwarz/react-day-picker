@@ -478,6 +478,7 @@ class DayPicker extends Component {
 const styled = defaultStyle({
   position: 'relative',
   userSelect: 'none',
+  textAlign: 'center',
 
   '&interactionDisabled': {
     day: {
