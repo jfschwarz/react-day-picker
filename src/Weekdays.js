@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import defaultStyle from 'substyle';
+import { defaultStyle } from 'substyle';
 import DayPickerPropTypes from './PropTypes';
 
 function Weekdays({

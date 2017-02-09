@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions, react/forbid-prop-types */
 
 import React, { PropTypes } from 'react';
-import defaultStyle from 'substyle';
+import { defaultStyle } from 'substyle';
 
 function handleEvent(handler, day, modifiers) {
   if (!handler) {

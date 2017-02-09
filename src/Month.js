@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import defaultStyle from 'substyle';
+import { defaultStyle } from 'substyle';
 import DayPickerPropTypes from './PropTypes';
 import Weekdays from './Weekdays';
 import { getWeekArray } from './Helpers';
@@ -73,7 +73,6 @@ const styled = defaultStyle({
   borderCollapse: 'collapse',
   borderSpacing: 0,
   userSelect: 'none',
-  margin: '0 1rem',
 
   caption: {
     display: 'table-caption',

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import defaultStyle from 'substyle';
+import { defaultStyle } from 'substyle';
 
 function Navbar({
   style,
@@ -64,11 +64,11 @@ const styled = defaultStyle({
     cursor: 'pointer',
 
     '&prev': {
-      left: '1rem',
+      left: 0,
     },
 
     '&next': {
-      right: '1rem',
+      right: 0,
     },
   },
 });
