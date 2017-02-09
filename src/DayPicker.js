@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import defaultStyle from 'substyle';
+import { defaultStyle } from 'substyle';
 
 import Caption from './Caption';
 import Navbar from './Navbar';
