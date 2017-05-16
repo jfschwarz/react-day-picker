@@ -95,6 +95,7 @@
     "webpack": "^1.13.3"
   },
   "dependencies": {
+    "prop-types": "^15.5.10",
     "substyle": "^5.0.0"
   }
 }

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import DayPickerPropTypes from './PropTypes';
 
 export default function Caption({ date, months, locale, localeUtils, onClick, className, style }) {
