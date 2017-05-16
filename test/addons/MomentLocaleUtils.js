@@ -4,11 +4,11 @@ import * as MomentLocaleUtils from '../../src/addons/MomentLocaleUtils';
 describe('MomentLocaleUtils', () => {
   describe('formatDay', () => {
     it('should return day as string', () => {
-      const date = new Date('2015-12-20');
+      const date = new Date(2015, 11, 20);
       const formattedDate = MomentLocaleUtils.formatDay(date);
       expect(formattedDate).to.equal('Sun Dec 20, 2015');
       const formattedDateIT = MomentLocaleUtils.formatDay(date, 'it');
-      expect(formattedDateIT).to.equal('Dom 20 dic 2015');
+      expect(formattedDateIT).to.equal('dom 20 dic 2015');
     });
   });
 
@@ -25,14 +25,14 @@ describe('MomentLocaleUtils', () => {
   describe('formatWeekdayShort', () => {
     it('should return the short day name as string', () => {
       expect(MomentLocaleUtils.formatWeekdayShort(0)).to.equal('Su');
-      expect(MomentLocaleUtils.formatWeekdayShort(0, 'it')).to.equal('Do');
+      expect(MomentLocaleUtils.formatWeekdayShort(0, 'it')).to.equal('do');
     });
   });
 
   describe('formatWeekdayLong', () => {
     it('should return the long day name as string', () => {
       expect(MomentLocaleUtils.formatWeekdayLong(0)).to.equal('Sunday');
-      expect(MomentLocaleUtils.formatWeekdayLong(0, 'it')).to.equal('Domenica');
+      expect(MomentLocaleUtils.formatWeekdayLong(0, 'it')).to.equal('domenica');
     });
   });
 

@@ -1,8 +1,14 @@
-
 import { expect } from 'chai';
 import * as DateUtils from '../src/DateUtils';
 
 describe('DateUtils', () => {
+  it('should export all the functions', () => {
+    const imported = require('../src/DateUtils').default; // eslint-disable-line global-require
+    expect(Object.keys(DateUtils).length - 1).to.eql(
+      Object.keys(imported).length
+    );
+  });
+
   describe('addMonths', () => {
     it('adds a month', () => {
       const date = new Date(2015, 10);
@@ -27,6 +33,48 @@ describe('DateUtils', () => {
       const date = new Date();
       const newDate = DateUtils.clone(date);
       expect(newDate).to.not.equal(date);
+    });
+  });
+
+  describe('isDayBefore', () => {
+    it('returns true when the day is before the other day', () => {
+      const day1 = new Date(2015, 10, 11, 5, 25);
+      const day2 = new Date(2015, 10, 12, 3, 40);
+      const isDayBefore = DateUtils.isDayBefore(day1, day2);
+      expect(isDayBefore).to.be.true;
+    });
+    it('returns false for the same day with different times', () => {
+      const day1 = new Date(2015, 10, 11, 5, 25);
+      const day2 = new Date(2015, 10, 11, 6, 40);
+      const isDayBefore = DateUtils.isDayBefore(day1, day2);
+      expect(isDayBefore).to.be.false;
+    });
+    it('returns false if the second day is after', () => {
+      const day1 = new Date(2015, 10, 13, 5, 25);
+      const day2 = new Date(2015, 10, 12, 1, 40);
+      const isDayBefore = DateUtils.isDayBefore(day1, day2);
+      expect(isDayBefore).to.be.false;
+    });
+  });
+
+  describe('isDayAfter', () => {
+    it('returns true when the day is after the other day', () => {
+      const day1 = new Date(2015, 10, 13, 5, 25);
+      const day2 = new Date(2015, 10, 12, 3, 40);
+      const isDayAfter = DateUtils.isDayAfter(day1, day2);
+      expect(isDayAfter).to.be.true;
+    });
+    it('returns false for the same day with different times', () => {
+      const day1 = new Date(2015, 10, 11, 5, 25);
+      const day2 = new Date(2015, 10, 11, 6, 40);
+      const isDayAfter = DateUtils.isDayAfter(day1, day2);
+      expect(isDayAfter).to.be.false;
+    });
+    it('returns false if the second day is after', () => {
+      const day1 = new Date(2015, 10, 12, 5, 25);
+      const day2 = new Date(2015, 10, 13, 1, 40);
+      const isDayAfter = DateUtils.isDayAfter(day1, day2);
+      expect(isDayAfter).to.be.false;
     });
   });
 

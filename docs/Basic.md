@@ -1,10 +1,17 @@
 # Basic usage
 
-react-day-picker is designed to cover the most common needs for a date picker in a web application. This chapter illustrates the component's basic concepts by implementing a date picker to select, clear and disable days from the calendar.
+react-day-picker is designed to cover the most common needs for a date picker in web applications.
+
+The package includes:
+
+* the **DayPicker** component, to render the date picker (the "calendar")
+* the **DayPickerInput** component – to render an input field opening the DayPicker in an overlay.
+
+This guide illustrates the DayPicker basic concepts by implementing a date picker to select, clear and disable days from the calendar. For using the input field, read [this chapter](Input.md).
 
 ## Selecting a day
 
-react-day-picker doesn't hold the selected day in its state. Instead, you have to set it in your component when the user interacts with the calendar.
+react-day-picker doesn't hold the selected day in its state. Instead, you have to save it in your component as the user interacts with the calendar.
 
 The following component uses the `onDayClick` prop to save the clicked day in its own state:
 
@@ -12,18 +19,20 @@ The following component uses the `onDayClick` prop to save the clicked day in it
 import React from 'react';
 import DayPicker from 'react-day-picker';
 
+import 'react-day-picker/lib/style.css';
+
 class SelectDay extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleDayClick = this.handleDayClick.bind(this);
-  }
+  
   state = {
-    // The default selected day is today
-    selectedDay: new Date(),
+    selectedDay: new Date(), // We set the selected default as today
   };
-  handleDayClick(e, day) {
-    this.setState({ selectedDay: day });
+  
+  handleDayClick = day => {
+    this.setState({ 
+      selectedDay: day 
+    });
   }
+
   render() {
     return (
       <div>
@@ -34,73 +43,36 @@ class SelectDay extends React.Component {
       </div>
     )
   }
+
 }
 ```
 
-Somewhere your CSS must style the appearance for the selected day, but first you need to tell the Day Picker which days have been selected.
+> **Note** You can import the CSS from `react-day-picker/lib/style.css`, which contains a basic stylesheet. However, we recommend to write your own based on it. Read [Styling](Styling.md) to know how to properly style the component.
 
-The `selectedDays` prop is a function that checks whether a day should get the `selected` CSS modifier:
+We pass then the selected day (saved in the component’s state) to the `selectedDays` prop:
 
-```jsx
-import React from 'react';
-import DayPicker, { DateUtils } from 'react-day-picker';
-
-class SelectDay extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleDayClick = this.handleDayClick.bind(this);
-  }
-  state = {
-    selectedDay: new Date(),
-  };
-  // Check if the day in state is selected 
-  isDaySelected(day) {
-    return DateUtils.isSameDay(day, this.state.selectedDay);
-  }
-  handleDayClick(e, day) {
-    this.setState({ selectedDay: day });
-  }
-  render() {
-    return (
-      <div>
-        <DayPicker
-          onDayClick={ this.handleDayClick }
-          selectedDays={ this.isDaySelected }
-        />
-        <p>
-          The selected day is { this.state.selectedDay.toLocaleDateString() }
-        </p>
-      </div>
-    )
-  }
-}
+```diff
+<DayPicker
+  onDayClick={ this.handleDayClick }
++ selectedDays={ this.state.selectedDay }
+/>
 ```
 
-Then, in your CSS, add a `.DayPicker-Day--selected` selector to highlight the cell corresponding to the selected day. For example:
-
-```css
-.DayPicker-Day--selected {
-  background-color: red;
-  color: white;
-}
-```
-
-> **Note** You can use the CSS contained in `react-day-picker/lib/style.css`, which contains a basic stylesheet. Read [Styling](Styling.md) to know how to properly style the component.
+That day cell will get the `DayPicker-Day--selected` CSS class.
 
 ### Clearing the selected day
 
-When a selected day is clicked again, we want to clear it. This can be made setting the component's `selectedDay` to `null`.
+When a selected day is clicked again, we want to clear it. This can be made setting the component's `selectedDay` to `undefined` (or `null`).
 
-The `onDayClick` handler receives as third argument a `modifiers` object that can be inspected if the clicked day has been selected or not:
+The `onDayClick` handler receives as second argument an object that can be inspected to check if the clicked day has been selected or not:
 
-```jsx
-// snip
-handleDayClick(e, day, { selected }) {
-  if (selected) {
-    // Unselect the day if already selected
-    this.state({ selectedDay: null });
-    return;
-  }
+```diff
+handleDayClick = (day, { selected }) => {
++  if (selected) {
++    // Unselect the day if already selected
++    this.state({ selectedDay: undefined });
++    return;
++  }
   this.setState({ selectedDay: day });
 }
 ```
@@ -109,64 +81,75 @@ That's all! [See this example](http://react-day-picker.js.org/examples?selectabl
 
 ## Marking days as disabled
 
-Disabled days should not respond to the user's interaction and should appear as "disabled" on the calendar. Use the `disabledDays` prop to specify which days should be disabled.
+Disabled days should not respond to the user's interaction and should appear as "disabled" (e.g. grayed out) on the calendar. Here we are disabling all the Sundays:
 
-In the following example, we choose to disable every Sunday:
-
-```jsx
-import DayPicker from 'react-day-picker';
-
-const isSunday = day => day.getDay() === 0;
-
-class SelectDay extends React.Component {
-  render() {
-    return (
-      <DayPicker disabledDays={ isSunday } />
-    )
-  }
-}
+```diff
+<DayPicker
+  selectedDays={ this.state.selectedDay }
++  disabledDays={ { daysOfWeek: [0] } }
+  onDayClick={ this.handleDayClick }
+/>
 ```
 
-Then, style the day to appear as disabled in your CSS using the `.DayPicker-Day--disabled` selector:
-
-```css
-.DayPicker-Day--disabled {
-  background-color: grey;
-  color: white;
-  cursor: pointer;
-}
-```
+> The `selectedDays` and `disabledDays` prop can accept [different value types](http://react-day-picker.js.org/Modifiers.html) to give you more flexibility about which days should appear selected or disabled.
 
 ### Preventing the user to select a disabled day
 
-In the previous example nothing happens when the user clicks on a day, since the `onDayClick` prop is missing. As before, we need to save the value of the selected day in our component's state:
+This change still does not prevent the user to select a disabled day. Thus, we need our component to _not_ update its state if the clicked day is disabled.
+
+In the click handler we can use the second argument to check if the clicked day is disabled, and prevent its selection:
+
+```diff
+- handleDayClick = (day, { selected }) => {
++ handleDayClick = (day, { selected, disabled }) => {
++   if (disabled) {
++     return;
++   }
+   if (selected) {
+     // Unselect the day if already selected
+     this.state({ selectedDay: undefined });
+     return;
+   }
+  this.setState({ selectedDay: day });
+}
+```
+
+The final implementation:
 
 ```jsx
-import DayPicker, { DateUtils } from 'react-day-picker';
+import React from 'react';
+import DayPicker from 'react-day-picker';
 
-const isSunday = day => day.getDay() === 0;
+import 'react-day-picker/lib/style.css';
 
 class SelectDay extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleDayClick = this.handleDayClick.bind(this);
-  }
+  
   state = {
     selectedDay: new Date(),
   };
-  isDaySelected(day) {
-    return DateUtils.isSameDay(day, this.state.selectedDay);
+
+  handleDayClick = (day, { selected, disabled }) => {
+    if (disabled) {
+      return;
+    }
+    if (selected) {
+      this.state({ 
+        selectedDay: undefined 
+      });
+      return;
+    }
+    this.state({ 
+      selectedDay: day 
+    });
   }
-  handleDayClick(e, day) {
-    this.setState({ selectedDay: day });
-  }
+  
   render() {
     return (
       <div>
-        <DayPicker
-          disabledDays={ isSunday }
-          selectedDays={ this.isSelectedDay }
-          onDayClick={ this.handleDayClick }
+        <DayPicker 
+          selectedDays={ this.state.selectedDay }
+          disabledDays={ { daysOfWeek: [0] } }
+          onDayClick={ this.handleDayClick } 
         />
         <p>
           The selected day is { this.state.selectedDay.toLocaleDateString() }
@@ -177,22 +160,10 @@ class SelectDay extends React.Component {
 }
 ```
 
-This, however, will make selectable even the disabled days. We need instead our component to _not_ update its state, in case the clicked day is disabled. In the click handler we can use the day's modifiers to check if the day was disabled:
-
-```jsx
-handleDayClick(e, day, { disabled }) {
-  if (disabled) {
-    // Do not update the state if the day is disabled
-    return;
-  }
-  this.setState({ selectedDay: day });
-}
-```
-
-Check out [this example](http://react-day-picker.js.org/examples?disabled) shows a similar implementation.
+Check out [this example](http://react-day-picker.js.org/examples?disabled) running a similar implementation.
 
 ## Next steps
 
-The `selectedDays` function and the `onDayClick` event handler can implement a more complex logic to make the date picker more powerful. For example, you can make the date picker to [select a range of days](http://react-day-picker.js.org/examples?range).
+The `selectedDays`/`disabledDays` props and the `onDayClick` event handler can implement a more complex logic to respond to your app's needs. For example, you can make the date picker to [select a range of days](http://react-day-picker.js.org/examples?range).
 
-You can go deeper with the customization using **modifiers**. Modifiers are a powerful concept behind react-day-picker. Read more about them in the [next chapter](Modifiers.md).
+You can go deeper with the customization using **day modifiers**. Read more about them in the [next chapter](Modifiers.md).

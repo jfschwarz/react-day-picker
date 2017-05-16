@@ -1,20 +1,9 @@
-
 import { clone } from './DateUtils';
 import { getFirstDayOfWeek } from './LocaleUtils';
 
 export function cancelEvent(e) {
   e.preventDefault();
   e.stopPropagation();
-}
-
-export function getCustomProps(props, propTypes) {
-  const customProps = {};
-  Object.keys(props)
-      .filter(propName => !{}.hasOwnProperty.call(propTypes, propName))
-      .forEach((propName) => {
-        customProps[propName] = props[propName];
-      });
-  return customProps;
 }
 
 export function getFirstDayOfMonth(d) {
@@ -33,10 +22,10 @@ export function getDaysInMonth(d) {
 export function getModifiersFromProps(props) {
   const modifiers = { ...props.modifiers };
   if (props.selectedDays) {
-    modifiers.selected = props.selectedDays;
+    modifiers[props.classNames.selected] = props.selectedDays;
   }
   if (props.disabledDays) {
-    modifiers.disabled = props.disabledDays;
+    modifiers[props.classNames.disabled] = props.disabledDays;
   }
   return modifiers;
 }
@@ -52,22 +41,21 @@ export function getFirstDayOfWeekFromProps(props) {
   return 0;
 }
 
-export function getModifiersForDay(d, modifierFunctions = {}) {
-  return Object.keys(modifierFunctions).reduce((modifiers, modifier) => {
-    const func = modifierFunctions[modifier];
-    if (func(d)) {
-      modifiers.push(modifier);
-    }
-    return modifiers;
-  }, []);
+export function isRangeOfDates(value) {
+  return !!(value && value.from && value.to);
 }
 
 export function getMonthsDiff(d1, d2) {
-  return (d2.getMonth() - d1.getMonth()) +
-    (12 * (d2.getFullYear() - d1.getFullYear()));
+  return (
+    d2.getMonth() - d1.getMonth() + 12 * (d2.getFullYear() - d1.getFullYear())
+  );
 }
 
-export function getWeekArray(d, firstDayOfWeek = getFirstDayOfWeek(), fixedWeeks) {
+export function getWeekArray(
+  d,
+  firstDayOfWeek = getFirstDayOfWeek(),
+  fixedWeeks
+) {
   const daysInMonth = getDaysInMonth(d);
   const dayArray = [];
 
@@ -78,7 +66,7 @@ export function getWeekArray(d, firstDayOfWeek = getFirstDayOfWeek(), fixedWeeks
     dayArray.push(new Date(d.getFullYear(), d.getMonth(), i, 12));
   }
 
-  dayArray.forEach((day) => {
+  dayArray.forEach(day => {
     if (week.length > 0 && day.getDay() === firstDayOfWeek) {
       weekArray.push(week);
       week = [];

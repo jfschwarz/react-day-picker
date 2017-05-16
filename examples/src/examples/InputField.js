@@ -1,73 +1,57 @@
 import React from 'react';
 import moment from 'moment';
 
-import DayPicker, { DateUtils } from '../../../src';
+import DayPickerInput from '../../../src/DayPickerInput';
 
 import '../../../src/style.css';
 
+const DAY_FORMAT = 'LL';
+
 export default class InputField extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.handleDayClick = this.handleDayClick.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.showCurrentDate = this.showCurrentDate.bind(this);
-  }
-
   state = {
-    value: moment().format('L'), // The value of the input field
-    month: new Date(), // The month to display in the calendar
+    selectedDay: undefined,
+    isMonday: false,
   };
 
-  showCurrentDate() {
-    this.daypicker.showMonth(this.state.month);
-  }
-
-  handleInputChange(e) {
-    const { value } = e.target;
-
-    // Change the current month only if the value entered by the user
-    // is a valid date, according to the `L` format
-    if (moment(value, 'L', true).isValid()) {
+  handleDayChange = (selectedDay, modifiers) => {
+    if (modifiers.disabled) {
       this.setState({
-        month: moment(value, 'L').toDate(),
-        value,
-      }, this.showCurrentDate);
-    } else {
-      this.setState({ value }, this.showCurrentDate);
+        selectedDay: undefined,
+      });
+      return;
     }
-  }
-
-  handleDayClick(e, day) {
-    this.setState({
-      value: moment(day).format('L'),
-      month: day,
-    });
-  }
+    this.setState({ selectedDay, isMonday: modifiers.monday });
+  };
 
   render() {
-    const selectedDay = moment(this.state.value, 'L', true).toDate();
-
+    const { selectedDay, isMonday } = this.state;
+    const formattedDay = selectedDay
+      ? moment(selectedDay).format(DAY_FORMAT)
+      : '';
     return (
       <div>
         <p>
-          <input
-            type="text"
-            value={ this.state.value }
-            placeholder="YYYY-MM-DD"
-            onChange={ this.handleInputChange }
-            onFocus={ this.showCurrentDate }
-          />
+          {!selectedDay
+            ? '🤔 Type or pick a valid day'
+            : `😄 You chose ${formattedDay}${isMonday ? ' (a Monday)' : ''}`}
         </p>
-        <DayPicker
-          className="daypicker"
-          ref={ (el) => { this.daypicker = el; } }
-          initialMonth={ this.state.month }
-          selectedDays={ day => DateUtils.isSameDay(selectedDay, day) }
-          onDayClick={ this.handleDayClick }
+        <DayPickerInput
+          value={formattedDay}
+          onDayChange={this.handleDayChange}
+          format={DAY_FORMAT}
+          placeholder={`E.g. ${moment().locale('en').format(DAY_FORMAT)}`}
+          dayPickerProps={{
+            todayButton: 'Go to Today',
+            disabledDays: {
+              daysOfWeek: [0, 6],
+            },
+            enableOutsideDays: true,
+            modifiers: {
+              monday: { daysOfWeek: [1] },
+            },
+          }}
         />
       </div>
     );
   }
-
 }

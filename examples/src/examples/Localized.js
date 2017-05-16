@@ -1,27 +1,104 @@
 import React from 'react';
 import DayPicker from '../../../src';
 
-const MONTHS = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio',
-  'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre',
-  'Dicembre'];
+const WEEKDAYS_LONG = {
+  ru: [
+    'Воскресенье',
+    'Понедельник',
+    'Вторник',
+    'Среда',
+    'Четверг',
+    'Пятница',
+    'Суббота',
+  ],
+  it: [
+    'Domenica',
+    'Lunedì',
+    'Martedì',
+    'Mercoledì',
+    'Giovedì',
+    'Venerdì',
+    'Sabato',
+  ],
+};
+const WEEKDAYS_SHORT = {
+  ru: ['Во', 'По', 'Вт', 'Ср', 'Че', 'Пя', 'Су'],
+  it: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
+};
+const MONTHS = {
+  ru: [
+    'Январь',
+    'Февраль',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Август',
+    'Сентябрь',
+    'Октябрь',
+    'ноябрь',
+    'Декабрь',
+  ],
+  it: [
+    'Gennaio',
+    'Febbraio',
+    'Marzo',
+    'Aprile',
+    'Maggio',
+    'Giugno',
+    'Luglio',
+    'Agosto',
+    'Settembre',
+    'Ottobre',
+    'Novembre',
+    'Dicembre',
+  ],
+};
+const FIRST_DAY_OF_WEEK = {
+  ru: 1,
+  it: 1,
+};
 
-const WEEKDAYS_LONG = ['Domenica', 'Lunedì', 'Martedì',
-  'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+// Translate aria-labels
+const LABELS = {
+  ru: { nextMonth: 'следующий месяц', previousMonth: 'предыдущий месяц' },
+  it: { nextMonth: 'Prossimo mese', previousMonth: 'Mese precedente' },
+};
 
-const WEEKDAYS_SHORT = ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'];
+export default class Localized extends React.Component {
+  state = {
+    locale: 'en',
+  };
 
-export default function Localized() {
-  return (
-    <div>
-      <DayPicker
-        className="daypicker"
-        locale="it"
-        months={ MONTHS }
-        weekdaysLong={ WEEKDAYS_LONG }
-        weekdaysShort={ WEEKDAYS_SHORT }
-        firstDayOfWeek={ 1 }
-        modifiers={ { sunday: day => day.getDay() === 0 } }
-      />
-    </div>
-  );
+  switchLocale = e => {
+    const locale = e.target.value || 'en';
+    this.setState({ locale });
+  };
+
+  render() {
+    const { locale } = this.state;
+
+    return (
+      <div>
+        <p>
+          <select value={locale} onChange={this.switchLocale}>
+            <option value="en">English</option>
+            <option value="ru">Русский (Russian)</option>
+            <option value="it">Italian</option>
+          </select>
+        </p>
+        <DayPicker
+          className="daypicker"
+          locale={locale}
+          months={MONTHS[locale]}
+          weekdaysLong={WEEKDAYS_LONG[locale]}
+          weekdaysShort={WEEKDAYS_SHORT[locale]}
+          firstDayOfWeek={FIRST_DAY_OF_WEEK[locale]}
+          labels={LABELS[locale]}
+          disabledDays={{ daysOfWeek: [0] }}
+        />
+      </div>
+    );
+  }
 }

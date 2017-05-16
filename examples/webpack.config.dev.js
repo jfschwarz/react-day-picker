@@ -1,6 +1,8 @@
 import webpack from 'webpack';
 import path from 'path';
 
+const rules = require('./webpack.config.rules');
+
 export default {
   devtool: 'source-map',
 
@@ -19,7 +21,6 @@ export default {
   },
 
   plugins: [
-
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('development'),
@@ -28,29 +29,16 @@ export default {
 
     // hot loader
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
 
-    // ignore moment locales
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-
+    // add moment locales
+    new webpack.ContextReplacementPlugin(
+      /moment[\\/]locale$/,
+      /^\.\/(ja|ar|it)$/
+    ),
   ],
 
   module: {
-    loaders: [{
-      test: /\.js$/,
-      include: [
-        path.join(__dirname, '../src'),
-        path.join(__dirname, './src'),
-        path.join(__dirname, '../dist'),
-      ],
-      loader: 'babel?cacheDirectory&plugins=react-hot-loader/babel',
-    }, {
-      test: /\.css$/,
-      loaders: ['style', 'css', 'autoprefixer-loader?browsers=last 2 version'],
-    }, {
-      test: /\.svg$/,
-      loader: 'url-loader?limit=100000&mimetype=image/svg+xml',
-    }],
+    rules,
   },
 
   resolve: {
@@ -65,5 +53,4 @@ export default {
     historyApiFallback: true,
     quiet: true, //  --no-info option
   },
-
 };

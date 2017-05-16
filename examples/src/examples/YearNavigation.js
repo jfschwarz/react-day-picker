@@ -3,7 +3,7 @@ import DayPicker from '../../../src';
 
 import '../../../src/style.css';
 
-const currentYear = (new Date()).getFullYear();
+const currentYear = new Date().getFullYear();
 const fromMonth = new Date(currentYear, 0, 1, 0, 0);
 const toMonth = new Date(currentYear + 10, 11, 31, 23, 59);
 
@@ -23,44 +23,40 @@ function YearMonthForm({ date, localeUtils, onChange, className, style }) {
 
   return (
     <form className={className} style={style}>
-      <select name="month" onChange={ handleChange } value={ date.getMonth() }>
-        { months.map((month, i) =>
-          <option key={ i } value={ i }>
-            { month }
-          </option>)
-        }
+      <select name="month" onChange={handleChange} value={date.getMonth()}>
+        {months.map((month, i) => <option key={i} value={i}>{month}</option>)}
       </select>
-      <select name="year" onChange={ handleChange } value={ date.getFullYear() }>
-        { years.map((year, i) =>
-          <option key={ i } value={ year }>
-            { year }
-          </option>)
-        }
+      <select name="year" onChange={handleChange} value={date.getFullYear()}>
+        {years.map((year, i) => (
+          <option key={i} value={year}>
+            {year}
+          </option>
+        ))}
       </select>
     </form>
   );
 }
 
 export default class YearNavigation extends React.Component {
-
   state = {
-    initialMonth: fromMonth,
+    month: fromMonth,
   };
-
+  handleYearMonthChange = month => {
+    this.setState({ month });
+  };
   render() {
     return (
       <div className="YearNavigation">
         <DayPicker
           className="daypicker"
-          initialMonth={ this.state.initialMonth }
-          fromMonth={ fromMonth }
-          toMonth={ toMonth }
+          month={this.state.month}
+          fromMonth={fromMonth}
+          toMonth={toMonth}
           captionElement={
-            <YearMonthForm onChange={ initialMonth => this.setState({ initialMonth }) } />
+            <YearMonthForm onChange={this.handleYearMonthChange} />
           }
         />
       </div>
     );
   }
-
 }

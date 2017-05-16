@@ -1,6 +1,6 @@
-import React, { PropTypes } from 'react';
-import { defaultStyle } from 'substyle';
-import DayPickerPropTypes from './PropTypes';
+import React from 'react';
+import { defaultStyle, PropTypes as SubstylePT } from 'substyle';
+import PropTypes from './PropTypes';
 
 function Weekday({
   weekday,
@@ -24,8 +24,8 @@ function Weekday({
   }
 
   return (
-    <div { ...style }>
-      <abbr { ...style('abbr') } title={ title }>
+    <div {...style} role="columnheader">
+      <abbr {...style('abbr')} title={title}>
         {content}
       </abbr>
     </div>
@@ -36,10 +36,12 @@ export const WeekdayPropTypes = {
   weekday: PropTypes.number,
   style: PropTypes.func.isRequired,
   locale: PropTypes.string,
-  localeUtils: DayPickerPropTypes.localeUtils,
+  localeUtils: PropTypes.localeUtils,
 
   weekdaysLong: PropTypes.arrayOf(PropTypes.string),
   weekdaysShort: PropTypes.arrayOf(PropTypes.string),
+
+  ...SubstylePT,
 };
 
 Weekday.propTypes = WeekdayPropTypes;

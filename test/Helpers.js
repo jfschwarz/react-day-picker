@@ -1,4 +1,3 @@
-
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -16,22 +15,9 @@ describe('Helpers', () => {
     });
   });
 
-  describe('getCustomProps', () => {
-    it('should filter props existing in the given propTypes', () => {
-      const props = {
-        foo: 1,
-        bar: 2,
-      };
-      const propTypes = {
-        bar: 'thing',
-      };
-      expect(Helpers.getCustomProps(props, propTypes)).to.eql({ foo: 1 });
-    });
-  });
-
   describe('getFirstDayOfWeekFromProps', () => {
     it('should return Sunday as default', () => {
-      expect(Helpers.getFirstDayOfWeekFromProps({ })).to.equal(0);
+      expect(Helpers.getFirstDayOfWeekFromProps({})).to.equal(0);
     });
 
     it('should return the day from localeUtils first', () => {
@@ -41,7 +27,9 @@ describe('Helpers', () => {
       expect(Helpers.getFirstDayOfWeekFromProps({ localeUtils })).to.equal(3);
     });
     it('should return the day from a number', () => {
-      expect(Helpers.getFirstDayOfWeekFromProps({ firstDayOfWeek: 5 })).to.equal(5);
+      expect(
+        Helpers.getFirstDayOfWeekFromProps({ firstDayOfWeek: 5 })
+      ).to.equal(5);
     });
   });
 
@@ -66,31 +54,6 @@ describe('Helpers', () => {
       expect(Helpers.getFirstDayOfMonth(date1).getDate()).to.equal(1);
       const date2 = new Date(1979, 8, 1);
       expect(Helpers.getFirstDayOfMonth(date2).getDate()).to.equal(1);
-    });
-  });
-
-  describe('getModifiersForDay', () => {
-    it('returns an array of modifiers', () => {
-      const modifierFunctions = {
-        yes() { return true; },
-        no() { return false; },
-        maybe(d) { return d.getMonth() === 8; },
-      };
-      let modifiers = Helpers.getModifiersForDay(new Date(2015, 8, 19), modifierFunctions);
-      expect(modifiers).to.have.length(2);
-      expect(modifiers.indexOf('yes')).to.be.above(-1);
-      expect(modifiers.indexOf('maybe')).to.be.above(-1);
-      expect(modifiers.indexOf('no')).to.equal(-1);
-
-      modifiers = Helpers.getModifiersForDay(new Date(2015, 9, 19), modifierFunctions);
-      expect(modifiers).to.have.length(1);
-      expect(modifiers.indexOf('yes')).to.be.above(-1);
-      expect(modifiers.indexOf('maybe')).to.equal(-1);
-      expect(modifiers.indexOf('no')).to.equal(-1);
-    });
-    it('works without passing modifiers', () => {
-      const modifiers = Helpers.getModifiersForDay(new Date(2015, 8, 19));
-      expect(modifiers).to.have.length(0);
     });
   });
 
@@ -149,7 +112,7 @@ describe('Helpers', () => {
       const weeks = Helpers.getWeekArray(new Date(2015, 8, 19));
 
       expect(weeks).to.have.length(5);
-       // go to october
+      // go to october
       const lastDay = weeks[4][6];
       expect(lastDay.getDate()).to.equal(3);
       expect(lastDay.getMonth()).to.equal(9);
@@ -170,7 +133,7 @@ describe('Helpers', () => {
     it('returns 7 days per week when starting day is sunday', () => {
       const weeks = Helpers.getWeekArray(new Date(2015, 6, 1));
       expect(weeks).to.have.length(5);
-      weeks.forEach((week) => {
+      weeks.forEach(week => {
         expect(week).to.have.length(7);
       });
     });
@@ -178,16 +141,29 @@ describe('Helpers', () => {
     it('returns 7 days per week when starting day is monday', () => {
       const weeks = Helpers.getWeekArray(new Date(2015, 6, 1), 1);
       expect(weeks).to.have.length(5);
-      weeks.forEach((week) => {
+      weeks.forEach(week => {
         expect(week).to.have.length(7);
       });
     });
 
     it('returns 7 days per week when starting day is saturday', () => {
       const weeks = Helpers.getWeekArray(new Date(2015, 6, 1), 6);
-      weeks.forEach((week) => {
+      weeks.forEach(week => {
         expect(week).to.have.length(7);
       });
+    });
+  });
+
+  describe('isRangeOfDates', () => {
+    it('should detect a properly shaped object', () => {
+      expect(Helpers.isRangeOfDates({ from: new Date(), to: new Date() })).to.be
+        .true;
+    });
+    it('should detect not properly shaped objects', () => {
+      expect(Helpers.isRangeOfDates({ from: null, to: new Date() })).to.be
+        .false;
+      expect(Helpers.isRangeOfDates({ to: new Date() })).to.be.false;
+      expect(Helpers.isRangeOfDates({ from: new Date() })).to.be.false;
     });
   });
 

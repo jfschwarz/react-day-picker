@@ -12,12 +12,12 @@
   color: #555;
 }
 
-.daypicker__day--from,
-.daypicker__day--to {
+.daypicker__day--start,
+.daypicker__day--end {
   position: relative;
 }
 
-.daypicker__day--from:not(.daypicker__day--outside):before {
+.daypicker__day--start:not(.daypicker__day--outside):before {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -29,7 +29,7 @@
   border-bottom-left-radius: 10px;
 }
 
-.daypicker__day--to:not(.daypicker__day--outside):after {
+.daypicker__day--end:not(.daypicker__day--outside):after {
   position: absolute;
   top: 0;
   bottom: 0;

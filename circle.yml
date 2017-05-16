@@ -1,0 +1,45 @@
+version: 2
+    
+jobs:
+  build:
+    working_directory: /react-day-picker
+    docker:
+      - image: node:7.9.0
+        environment:
+          MOCHA_FILE: "reports/test-results.xml"
+  
+    steps:
+      - checkout
+      - restore_cache:
+          key: yarn-{{ checksum "yarn.lock" }}
+      - run: yarn --pure-lockfile
+      - save_cache:
+          key: yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - "/usr/local/share/.cache/yarn"
+            - "./node_modules"
+      - run: mkdir -p reports
+      - run: yarn run lint -- --format junit --output-file reports/eslint.xml
+      - run: yarn run dtslint
+      - run: yarn run cover -- --reporter mocha-circleci-reporter
+      - run: 
+          name: Upload coverage info
+          command: |
+            yarn run codeclimate < ./coverage/lcov.info
+            yarn run coveralls < ./coverage/lcov.info
+      - store_test_results:
+          path: reports/
+      - run: 
+          name: Build lib
+          command: yarn run build
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - yarn run build # make sure build works
+  npm:
+    tag: /v[0-9]+(\.[0-9]+)*/
+    commands:
+      - yarn run build
+      - npm publish

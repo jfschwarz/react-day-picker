@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react';
-import { defaultStyle } from 'substyle';
-import DayPickerPropTypes from './PropTypes';
+import React from 'react';
+import { defaultStyle, PropTypes as SubstylePT } from 'substyle';
+import PropTypes from './PropTypes';
 
 function Weekdays({
   firstDayOfWeek,
+  showWeekNumbers,
   weekdaysLong,
   weekdaysShort,
   locale,
@@ -23,13 +24,16 @@ function Weekdays({
       locale,
       ...style('weekday'),
     };
-    const element = React.cloneElement(weekdayElement, elementProps);
+    const element = React.isValidElement(weekdayElement)
+      ? React.cloneElement(weekdayElement, elementProps)
+      : React.createElement(weekdayElement, elementProps);
     days.push(element);
   }
 
   return (
-    <div { ...style } role="rowgroup">
-      <div { ...style('row') } role="columnheader">
+    <div {...style} role="rowgroup">
+      <div {...style('row')} role="row">
+        {showWeekNumbers && <div {...style('weekday')} />}
         {days}
       </div>
     </div>
@@ -40,10 +44,17 @@ Weekdays.propTypes = {
   firstDayOfWeek: PropTypes.number.isRequired,
   weekdaysLong: PropTypes.arrayOf(PropTypes.string),
   weekdaysShort: PropTypes.arrayOf(PropTypes.string),
+  showWeekNumbers: PropTypes.bool,
   locale: PropTypes.string.isRequired,
-  localeUtils: DayPickerPropTypes.localeUtils.isRequired,
-  weekdayElement: PropTypes.element,
-  style: PropTypes.func.isRequired,
+
+  localeUtils: PropTypes.localeUtils.isRequired,
+  weekdayElement: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.func,
+    PropTypes.instanceOf(React.Component),
+  ]),
+
+  ...SubstylePT,
 };
 
 const styled = defaultStyle({

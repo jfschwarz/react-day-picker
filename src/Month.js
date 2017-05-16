@@ -1,71 +1,120 @@
-import React, { PropTypes } from 'react';
-import { defaultStyle } from 'substyle';
-import DayPickerPropTypes from './PropTypes';
+import React from 'react';
+import { defaultStyle, PropTypes as SubstylePT } from 'substyle';
+import PropTypes from './PropTypes';
 import Weekdays from './Weekdays';
 import { getWeekArray } from './Helpers';
+import { getWeekNumber } from './DateUtils';
 
 function Month({
   month,
   months,
-  weekdaysLong,
-  weekdaysShort,
+
+  fixedWeeks,
+  captionElement,
+  weekdayElement,
+
   locale,
   localeUtils,
-  captionElement,
+  weekdaysLong,
+  weekdaysShort,
+  firstDayOfWeek,
+
   onCaptionClick,
   children,
-  firstDayOfWeek,
+  footer,
+  showWeekNumbers,
+  onWeekClick,
+
   style,
-  weekdayElement,
-  fixedWeeks,
 }) {
   const captionProps = {
     date: month,
     months,
     localeUtils,
     locale,
-    onClick: onCaptionClick ? e => onCaptionClick(e, month) : undefined,
+    onClick: onCaptionClick ? e => onCaptionClick(month, e) : undefined,
     ...style('caption'),
   };
+  const caption = React.isValidElement(captionElement)
+    ? React.cloneElement(captionElement, captionProps)
+    : React.createElement(captionElement, captionProps);
+
   const weeks = getWeekArray(month, firstDayOfWeek, fixedWeeks);
+
   return (
-    <div { ...style }>
-      {React.cloneElement(captionElement, captionProps)}
+    <div {...style} role="grid">
+      {caption}
       <Weekdays
-        weekdaysShort={ weekdaysShort }
-        weekdaysLong={ weekdaysLong }
-        firstDayOfWeek={ firstDayOfWeek }
-        locale={ locale }
-        localeUtils={ localeUtils }
-        weekdayElement={ weekdayElement }
-        style={ style('weekdays') }
+        weekdaysShort={weekdaysShort}
+        weekdaysLong={weekdaysLong}
+        firstDayOfWeek={firstDayOfWeek}
+        showWeekNumbers={showWeekNumbers}
+        locale={locale}
+        localeUtils={localeUtils}
+        weekdayElement={weekdayElement}
+        style={style('weekdays')}
       />
-      <div { ...style('body') } role="grid">
-        {
-          weeks.map((week, j) =>
-            <div key={ j } { ...style('week') } role="gridcell">
+      <div {...style('body')} role="rowgroup">
+        {weeks.map(week => {
+          let weekNumber;
+          if (showWeekNumbers) {
+            weekNumber = getWeekNumber(week[0]);
+          }
+          return (
+            <div key={week[0].getTime()} {...style('week')} role="row">
+              {showWeekNumbers &&
+                <div
+                  {...style('weekNumber')}
+                  tabIndex={0}
+                  role="gridcell"
+                  onClick={e => onWeekClick(weekNumber, week, e)}
+                >
+                  {weekNumber}
+                </div>}
               {week.map(day => children(day, month))}
-            </div>,
-        )}
+            </div>
+          );
+        })}
       </div>
+      {footer &&
+        <div {...style('footer')}>
+          {footer}
+        </div>}
     </div>
   );
 }
 
 Month.propTypes = {
   month: PropTypes.instanceOf(Date).isRequired,
-  months: React.PropTypes.arrayOf(React.PropTypes.string),
-  captionElement: PropTypes.node.isRequired,
-  firstDayOfWeek: PropTypes.number.isRequired,
+  months: PropTypes.arrayOf(PropTypes.string),
+
+  fixedWeeks: PropTypes.bool,
+  captionElement: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.func,
+    PropTypes.instanceOf(React.Component),
+  ]).isRequired,
+  weekdayElement: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.func,
+    PropTypes.instanceOf(React.Component),
+  ]),
+
+  footer: PropTypes.node,
+  showWeekNumbers: PropTypes.bool,
+  onWeekClick: PropTypes.func,
+
+  locale: PropTypes.string.isRequired,
+  localeUtils: PropTypes.localeUtils.isRequired,
   weekdaysLong: PropTypes.arrayOf(PropTypes.string),
   weekdaysShort: PropTypes.arrayOf(PropTypes.string),
-  locale: PropTypes.string.isRequired,
-  localeUtils: DayPickerPropTypes.localeUtils.isRequired,
+  firstDayOfWeek: PropTypes.number.isRequired,
+
   onCaptionClick: PropTypes.func,
+
   children: PropTypes.func.isRequired,
-  style: PropTypes.func.isRequired,
-  weekdayElement: PropTypes.element,
-  fixedWeeks: PropTypes.bool,
+
+  ...SubstylePT,
 };
 
 const styled = defaultStyle({

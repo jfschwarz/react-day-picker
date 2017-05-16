@@ -1,42 +1,27 @@
 const webpack = require('webpack');
 const path = require('path');
+const rules = require('./webpack.config.rules');
 
 module.exports = {
   devtool: 'source-map',
   entry: path.join(__dirname, 'src/main.js'),
 
   output: {
-    path: './built/js',
+    path: path.join(__dirname, './built/js'),
     publicPath: '/js/',
     filename: 'main.js',
   },
 
   module: {
-    loaders: [{
-      test: /\.js$/,
-      include: [
-        path.join(__dirname, '../src'),
-        path.join(__dirname, './src'),
-        path.join(__dirname, '../dist'),
-      ],
-      loaders: ['babel'],
-    }, {
-      test: /\.css$/,
-      loaders: ['style', 'css', 'autoprefixer-loader?browsers=last 2 version'],
-    }],
-  },
-
-  resolve: {
-    extensions: ['', '.js'],
-    alias: {
-      react: path.resolve(__dirname, '../node_modules/react'),
-    },
+    rules,
   },
 
   plugins: [
-
-    // ignore moment locales
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    // add moment locales
+    new webpack.ContextReplacementPlugin(
+      /moment[\\/]locale$/,
+      /^\.\/(ja|ar|it)$/
+    ),
 
     new webpack.DefinePlugin({
       'process.env': {
@@ -47,24 +32,28 @@ module.exports = {
     new webpack.optimize.UglifyJsPlugin({
       mangle: {
         except: [
+          'AdvancedModifiers',
           'Birthdays',
           'DisabledDays',
           'BlockedNavigation',
+          'CSSModules',
           'CustomElements',
           'FixedWeeks',
           'InputField',
           'InputFieldOverlay',
           'Localized',
           'LocalizedMoment',
-          'LocalizedCustom',
           'Modifiers',
           'MultipleDays',
           'Range',
           'RangeAdvanced',
           'Restricted',
           'SelectableDay',
+          'TodayButton',
           'SimpleCalendar',
+          'SimpleInput',
           'TouchEvents',
+          'WeekNumbers',
           'YearCalendar',
           'YearNavigation',
         ],
@@ -73,7 +62,5 @@ module.exports = {
         warnings: false,
       },
     }),
-
   ],
-
 };

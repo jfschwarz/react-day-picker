@@ -1,20 +1,30 @@
 /* eslint-env node */
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
-  entry: './DayPicker.js',
-  devtool: 'source-map',
+  entry: {
+    daypicker: './DayPicker.js',
+    daypickerinput: './DayPickerInput.js',
+  },
   output: {
-    path: __dirname + '/dist',
-    filename: 'DayPicker.js',
+    path: `${__dirname}/lib`,
+    filename: `[name]${isProduction ? '.min' : ''}.js`,
     library: 'DayPicker',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
   },
   externals: {
-    'react': {
+    react: {
       root: 'React',
       commonjs2: 'react',
       commonjs: 'react',
-      amd: 'react'
-    }
+      amd: 'react',
+    },
+    moment: {
+      root: 'moment',
+      commonjs2: 'moment',
+      commonjs: 'moment',
+      amd: 'moment',
+    },
   },
 };
