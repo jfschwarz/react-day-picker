@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/tabindex-no-positive */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import SyntheticEvent from 'react-dom/lib/SyntheticEvent';
 import { isElement } from 'react-addons-test-utils';
 import { shallow as enzymeShallow, mount, render } from 'enzyme';
