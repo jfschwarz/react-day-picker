@@ -51,7 +51,5 @@ export default {
     },
   },
 
-  '&interactionDisabled': {
-
-  },
+  '&interactionDisabled': {},
 };

@@ -10,7 +10,6 @@ import * as Helpers from './Helpers';
 import * as DateUtils from './DateUtils';
 import * as LocaleUtils from './LocaleUtils';
 import * as ModifiersUtils from './ModifiersUtils';
-import classNames from './classNames';
 
 import keys from './keys';
 import PropTypes, { ModifierPropType } from './PropTypes';
@@ -102,7 +101,6 @@ class DayPicker extends Component {
   };
 
   static defaultProps = {
-    classNames,
     tabIndex: 0,
     initialMonth: new Date(),
     numberOfMonths: 1,
@@ -120,8 +118,8 @@ class DayPicker extends Component {
     showWeekNumbers: false,
     renderDay: day => day.getDate(),
     weekdayElement: <Weekday />,
-    navbarElement: <Navbar classNames={classNames} />,
-    captionElement: <Caption classNames={classNames} />,
+    navbarElement: <Navbar />,
+    captionElement: <Caption />,
   };
 
   constructor(props) {
@@ -444,20 +442,14 @@ class DayPicker extends Component {
   renderDayInMonth(day, month) {
     const propModifiers = Helpers.getModifiersFromProps(this.props);
     const dayModifiers = ModifiersUtils.getModifiersForDay(day, propModifiers);
-    if (
-      DateUtils.isSameDay(day, new Date()) &&
-      !Object.prototype.hasOwnProperty.call(
-        propModifiers,
-        this.props.classNames.today
-      )
-    ) {
-      dayModifiers.push(this.props.classNames.today);
+    const isOutside = day.getMonth() !== month.getMonth();
+    if (DateUtils.isSameDay(day, new Date())) {
+      dayModifiers.push('today');
     }
-    if (day.getMonth() !== month.getMonth()) {
-      dayModifiers.push(this.props.classNames.outside);
+    if (isOutside) {
+      dayModifiers.push('outside');
     }
 
-    const isOutside = day.getMonth() !== month.getMonth();
     let tabIndex = null;
     if (this.props.onDayClick && !isOutside) {
       tabIndex = -1;
@@ -471,7 +463,7 @@ class DayPicker extends Component {
     dayModifiers.forEach(modifier => {
       modifiers[modifier] = true;
     });
-
+    console.log({ ...this.props.style('day') });
     return (
       <Day
         key={`${isOutside ? 'outside-' : ''}${key}`}
@@ -540,9 +532,9 @@ class DayPicker extends Component {
     return (
       <button
         tabIndex={0}
-        className={this.props.classNames.todayButton}
         aria-label={this.props.todayButton}
         onClick={this.handleTodayButtonClick}
+        style={this.props.style('todayButton')}
       >
         {this.props.todayButton}
       </button>

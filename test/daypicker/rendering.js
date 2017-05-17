@@ -7,11 +7,10 @@ import { shallow, mount, render } from 'enzyme';
 import { spy } from 'sinon';
 
 import DayPicker from '../../src/DayPicker';
-import classNames from '../../src/classNames';
 
-describe('DayPicker’s rendering', () => {
+describe.only('DayPicker’s rendering', () => {
   it('should have default props', () => {
-    const dayPicker = <DayPicker />;
+    const dayPicker = <DayPicker className="daypicker" />;
     const now = new Date();
     expect(dayPicker.props.initialMonth.getMonth()).to.equal(now.getMonth());
     expect(dayPicker.props.initialMonth.getYear()).to.equal(now.getYear());
@@ -28,13 +27,13 @@ describe('DayPicker’s rendering', () => {
     expect(dayPicker.props.tabIndex).to.equal(0);
   });
   it('should have the right CSS classes and attributes', () => {
-    const wrapper = shallow(<DayPicker />);
-    expect(wrapper).to.have.className('DayPicker');
+    const wrapper = shallow(<DayPicker className="daypicker" />);
+    expect(wrapper).to.have.className('daypicker');
     expect(wrapper).to.have.attr('lang', 'en');
-    expect(wrapper).to.have.className('DayPicker--interactionDisabled');
+    expect(wrapper).to.have.className('daypicker--interactionDisabled');
   });
   it('should use `initialMonth` as the current month', () => {
-    const wrapper = shallow(<DayPicker />);
+    const wrapper = shallow(<DayPicker className="daypicker" />);
     const instance = wrapper.instance();
     expect(instance.props.initialMonth.getFullYear()).to.equal(
       instance.state.currentMonth.getFullYear()
@@ -47,6 +46,7 @@ describe('DayPicker’s rendering', () => {
   it('should use `month` as the current month instead of `initialMonth`', () => {
     const wrapper = shallow(
       <DayPicker
+        className="daypicker"
         month={new Date(2018, 10, 11)}
         initialMonth={new Date(2018, 1, 11)}
       />
@@ -61,7 +61,9 @@ describe('DayPicker’s rendering', () => {
     expect(instance.state.currentMonth.getDate()).to.equal(1);
   });
   it('should update the current month when `month` is updated', () => {
-    const wrapper = mount(<DayPicker month={new Date(2018, 10, 11)} />);
+    const wrapper = mount(
+      <DayPicker className="daypicker" month={new Date(2018, 10, 11)} />
+    );
     wrapper.setProps({ month: new Date(2016, 1, 15) });
     const instance = wrapper.instance();
     expect(instance.state.currentMonth.getFullYear()).to.equal(2016);
@@ -69,7 +71,9 @@ describe('DayPicker’s rendering', () => {
     expect(instance.state.currentMonth.getDate()).to.equal(1);
   });
   it('should not do anything when other props are updated', () => {
-    const wrapper = mount(<DayPicker month={new Date(2018, 10, 11)} />);
+    const wrapper = mount(
+      <DayPicker className="daypicker" month={new Date(2018, 10, 11)} />
+    );
     wrapper.setProps({ initialMonth: new Date(2014, 10, 11) });
     const instance = wrapper.instance();
     expect(instance.state.currentMonth.getFullYear()).to.equal(2018);
@@ -77,43 +81,48 @@ describe('DayPicker’s rendering', () => {
     expect(instance.state.currentMonth.getDate()).to.equal(1);
   });
   it('should render multiple months', () => {
-    const wrapper = mount(<DayPicker numberOfMonths={12} />);
-    expect(wrapper.find('.DayPicker-Month')).to.have.length(12);
+    const wrapper = mount(
+      <DayPicker className="daypicker" numberOfMonths={12} />
+    );
+    expect(wrapper.find('.daypicker__month')).to.have.length(12);
   });
   it('should render multiple months, reversed', () => {
     const wrapper = mount(
       <DayPicker
+        className="daypicker"
         initialMonth={new Date(2015, 0)}
         numberOfMonths={2}
         reverseMonths
       />
     );
-    expect(wrapper.find('.DayPicker-Caption').at(0)).to.have.text(
+    expect(wrapper.find('.daypicker__caption').at(0)).to.have.text(
       'February 2015'
     );
-    expect(wrapper.find('.DayPicker-Caption').at(1)).to.have.text(
+    expect(wrapper.find('.daypicker__caption').at(1)).to.have.text(
       'January 2015'
     );
   });
   it('should not include the interactionDisabled CSS modifier', () => {
-    const wrapper = shallow(<DayPicker onDayClick={() => {}} />);
-    expect(wrapper).to.not.have.className('DayPicker--interactionDisabled');
+    const wrapper = shallow(
+      <DayPicker className="daypicker" onDayClick={() => {}} />
+    );
+    expect(wrapper).to.not.have.className('daypicker__-interactionDisabled');
   });
   it('should include the given className', () => {
     const wrapper = shallow(<DayPicker className="given" />);
     expect(wrapper).to.have.className('given');
   });
   it('should have the application role', () => {
-    const wrapper = shallow(<DayPicker />);
+    const wrapper = shallow(<DayPicker className="daypicker" />);
     expect(wrapper).to.have.attr('role', 'application');
   });
   it('should use the given tabIndex', () => {
-    const wrapper = shallow(<DayPicker tabIndex={-1} />);
+    const wrapper = shallow(<DayPicker className="daypicker" tabIndex={-1} />);
     expect(wrapper).to.have.attr('tabindex', '-1');
   });
   it('should spread props to the container', () => {
     const wrapper = shallow(
-      <DayPicker containerProps={{ 'data-foo': 'bar' }} />
+      <DayPicker className="daypicker" containerProps={{ 'data-foo': 'bar' }} />
     );
     expect(wrapper).to.have.attr('data-foo', 'bar');
   });
@@ -121,7 +130,11 @@ describe('DayPicker’s rendering', () => {
     const handleBlur = spy();
     const handleFocus = spy();
     const wrapper = mount(
-      <DayPicker onFocus={handleFocus} onBlur={handleBlur} />
+      <DayPicker
+        className="daypicker"
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
     );
     wrapper.simulate('focus');
     wrapper.simulate('blur');
@@ -129,27 +142,31 @@ describe('DayPicker’s rendering', () => {
     expect(handleFocus).to.have.been.calledOnce;
   });
   it('should include the navigation bar', () => {
-    const wrapper = render(<DayPicker />);
-    expect(wrapper.find('.DayPicker-NavBar')).to.exist;
+    const wrapper = render(<DayPicker className="daypicker" />);
+    expect(wrapper.find('.daypicker__navbar')).to.exist;
   });
   it('should render the aria labels', () => {
-    const wrapper = render(<DayPicker />);
-    expect(wrapper.find('.DayPicker-NavButton--prev')).to.have.attr(
+    const wrapper = render(<DayPicker className="daypicker" />);
+    expect(wrapper.find('.daypicker__navButton--prev')).to.have.attr(
       'aria-label',
       'Previous Month'
     );
-    expect(wrapper.find('.DayPicker-NavButton--next')).to.have.attr(
+    expect(wrapper.find('.daypicker__navButton--next')).to.have.attr(
       'aria-label',
       'Next Month'
     );
   });
   it('should render the day cells', () => {
-    const wrapper = render(<DayPicker initialMonth={new Date(2015, 6)} />);
-    expect(wrapper.find('.DayPicker-Day')).to.have.length(35);
+    const wrapper = render(
+      <DayPicker className="daypicker" initialMonth={new Date(2015, 6)} />
+    );
+    expect(wrapper.find('.daypicker__day')).to.have.length(35);
   });
   it("should skip the navigation bar if can't change month", () => {
-    const wrapper = render(<DayPicker canChangeMonth={false} />);
-    expect(wrapper.find('.DayPicker-NavBar')).to.not.exist;
+    const wrapper = render(
+      <DayPicker className="daypicker" canChangeMonth={false} />
+    );
+    expect(wrapper.find('.daypicker__navbar')).to.not.exist;
   });
   it('should render a custom content for the cell', () => {
     const renderDay = (day, modifiers) => {
@@ -160,25 +177,32 @@ describe('DayPicker’s rendering', () => {
     };
     const wrapper = render(
       <DayPicker
+        className="daypicker"
         enableOutsideDays
         modifiers={{ foo: () => true }}
         renderDay={renderDay}
       />
     );
-    expect(wrapper.find('.DayPicker-Day').first()).to.have.text('bar');
+    expect(wrapper.find('.daypicker__day').first()).to.have.text('bar');
   });
   it('should render a custom number of months', () => {
-    const wrapper = render(<DayPicker numberOfMonths={3} />);
-    expect(wrapper.find('.DayPicker-Month')).to.have.length(3);
+    const wrapper = render(
+      <DayPicker className="daypicker" numberOfMonths={3} />
+    );
+    expect(wrapper.find('.daypicker__month')).to.have.length(3);
   });
   it('should render a custom caption element', () => {
     const Caption = () => <p>boo</p>;
-    const wrapper = mount(<DayPicker captionElement={<Caption />} />);
+    const wrapper = mount(
+      <DayPicker className="daypicker" captionElement={<Caption />} />
+    );
     expect(wrapper.containsMatchingElement(<Caption />)).to.be.true;
   });
   it('should render a custom caption element as a function', () => {
     const Caption = () => <p>boo</p>;
-    const wrapper = mount(<DayPicker captionElement={Caption} />);
+    const wrapper = mount(
+      <DayPicker className="daypicker" captionElement={Caption} />
+    );
     expect(wrapper.containsMatchingElement(<Caption />)).to.be.true;
   });
   it('should render a custom caption element as a class', () => {
@@ -189,7 +213,9 @@ describe('DayPicker’s rendering', () => {
         return <p>boo</p>;
       }
     }
-    const wrapper = mount(<DayPicker captionElement={Caption} />);
+    const wrapper = mount(
+      <DayPicker className="daypicker" captionElement={Caption} />
+    );
     expect(wrapper.containsMatchingElement(<Caption />)).to.be.true;
     /* eslint-enable react/no-multi-comp */
     /* eslint-enable react/prefer-stateless-function */
@@ -200,24 +226,28 @@ describe('DayPicker’s rendering', () => {
     );
     CustomNavbar.propTypes = { className: PropTypes.string };
     const navbar = <CustomNavbar />;
-    const dayPicker = <DayPicker navbarElement={navbar} />;
+    const dayPicker = (
+      <DayPicker className="daypicker" navbarElement={navbar} />
+    );
     const wrapper = mount(dayPicker);
 
     expect(isElement(dayPicker.props.navbarElement)).to.be.true;
     expect(wrapper.containsMatchingElement(navbar)).to.be.true;
-    expect(wrapper.find('.DayPicker-NavBar')).to.exist;
-    expect(wrapper.find('.DayPicker-NavBar').at(0)).to.have.text('Navbar');
+    expect(wrapper.find('.daypicker__navbar')).to.exist;
+    expect(wrapper.find('.daypicker__navbar').at(0)).to.have.text('Navbar');
   });
   it('should render a custom navbar element as a function', () => {
     const CustomNavbar = ({ className }) => (
       <div className={className}>Navbar</div>
     );
     CustomNavbar.propTypes = { className: PropTypes.string };
-    const wrapper = mount(<DayPicker navbarElement={CustomNavbar} />);
+    const wrapper = mount(
+      <DayPicker className="daypicker" navbarElement={CustomNavbar} />
+    );
 
     expect(wrapper.containsMatchingElement(<CustomNavbar />)).to.be.true;
-    expect(wrapper.find('.DayPicker-NavBar')).to.exist;
-    expect(wrapper.find('.DayPicker-NavBar').at(0)).to.have.text('Navbar');
+    expect(wrapper.find('.daypicker__navbar')).to.exist;
+    expect(wrapper.find('.daypicker__navbar').at(0)).to.have.text('Navbar');
   });
   it('should render a custom navbar element as a class', () => {
     /* eslint-disable react/prefer-stateless-function */
@@ -228,11 +258,13 @@ describe('DayPicker’s rendering', () => {
         return <div className={this.props.className}>Navbar</div>;
       }
     }
-    const wrapper = mount(<DayPicker navbarElement={CustomNavbar} />);
+    const wrapper = mount(
+      <DayPicker className="daypicker" navbarElement={CustomNavbar} />
+    );
 
     expect(wrapper.containsMatchingElement(<CustomNavbar />)).to.be.true;
-    expect(wrapper.find('.DayPicker-NavBar')).to.exist;
-    expect(wrapper.find('.DayPicker-NavBar').at(0)).to.have.text('Navbar');
+    expect(wrapper.find('.daypicker__navbar')).to.exist;
+    expect(wrapper.find('.daypicker__navbar').at(0)).to.have.text('Navbar');
     /* eslint-enable react/prefer-stateless-function */
     /* eslint-enable react/no-multi-comp */
   });
@@ -245,13 +277,17 @@ describe('DayPicker’s rendering', () => {
       weekday: PropTypes.number,
     };
     const weekday = <CustomWeekday />;
-    const dayPicker = <DayPicker weekdayElement={weekday} />;
+    const dayPicker = (
+      <DayPicker className="daypicker" weekdayElement={weekday} />
+    );
     const wrapper = mount(dayPicker);
 
     expect(isElement(dayPicker.props.weekdayElement)).to.be.true;
     expect(wrapper.containsMatchingElement(weekday)).to.be.true;
-    expect(wrapper.find('.DayPicker-Weekday')).to.have.length(7);
-    const weekdayDoms = wrapper.find('.DayPicker-Weekday');
+    expect(wrapper.find('.daypicker__month__weekdays__weekday')).to.have.length(
+      7
+    );
+    const weekdayDoms = wrapper.find('.daypicker__month__weekdays__weekday');
     weekdayDoms.forEach((_, i) => {
       expect(weekdayDoms.at(i)).to.have.text(i);
     });
@@ -264,12 +300,16 @@ describe('DayPicker’s rendering', () => {
       className: PropTypes.string,
       weekday: PropTypes.number,
     };
-    const dayPicker = <DayPicker weekdayElement={CustomWeekday} />;
+    const dayPicker = (
+      <DayPicker className="daypicker" weekdayElement={CustomWeekday} />
+    );
     const wrapper = mount(dayPicker);
 
     expect(wrapper.containsMatchingElement(<CustomWeekday />)).to.be.true;
-    expect(wrapper.find('.DayPicker-Weekday')).to.have.length(7);
-    const weekdayDoms = wrapper.find('.DayPicker-Weekday');
+    expect(wrapper.find('.daypicker__month__weekdays__weekday')).to.have.length(
+      7
+    );
+    const weekdayDoms = wrapper.find('.daypicker__month__weekdays__weekday');
     weekdayDoms.forEach((_, i) => {
       expect(weekdayDoms.at(i)).to.have.text(i);
     });
@@ -286,12 +326,16 @@ describe('DayPicker’s rendering', () => {
         return <div className={this.props.className}>{this.props.weekday}</div>;
       }
     }
-    const dayPicker = <DayPicker weekdayElement={CustomWeekday} />;
+    const dayPicker = (
+      <DayPicker className="daypicker" weekdayElement={CustomWeekday} />
+    );
     const wrapper = mount(dayPicker);
 
     expect(wrapper.containsMatchingElement(<CustomWeekday />)).to.be.true;
-    expect(wrapper.find('.DayPicker-Weekday')).to.have.length(7);
-    const weekdayDoms = wrapper.find('.DayPicker-Weekday');
+    expect(wrapper.find('.daypicker__month__weekdays__weekday')).to.have.length(
+      7
+    );
+    const weekdayDoms = wrapper.find('.daypicker__month__weekdays__weekday');
     weekdayDoms.forEach((_, i) => {
       expect(weekdayDoms.at(i)).to.have.text(i);
     });
@@ -299,57 +343,75 @@ describe('DayPicker’s rendering', () => {
     /* eslint-enable react/no-multi-comp */
   });
   it('should not render the outside days', () => {
-    const wrapper = mount(<DayPicker initialMonth={new Date(2015, 6)} />);
-    expect(wrapper.find('.DayPicker-Day').at(0)).to.have.text('');
-    expect(wrapper.find('.DayPicker-Day').at(1)).to.have.text('');
-    expect(wrapper.find('.DayPicker-Day').at(2)).to.have.text('');
+    const wrapper = mount(
+      <DayPicker className="daypicker" initialMonth={new Date(2015, 6)} />
+    );
+    expect(wrapper.find('.daypicker__day').at(0)).to.have.text('');
+    expect(wrapper.find('.daypicker__day').at(1)).to.have.text('');
+    expect(wrapper.find('.daypicker__day').at(2)).to.have.text('');
   });
   it('should render the outside days', () => {
     const wrapper = mount(
-      <DayPicker enableOutsideDays initialMonth={new Date(2015, 6)} />
+      <DayPicker
+        className="daypicker"
+        enableOutsideDays
+        initialMonth={new Date(2015, 6)}
+      />
     );
-    expect(wrapper.find('.DayPicker-Day').at(0)).to.have.text('28');
-    expect(wrapper.find('.DayPicker-Day').at(1)).to.have.text('29');
-    expect(wrapper.find('.DayPicker-Day').at(2)).to.have.text('30');
+    expect(wrapper.find('.daypicker__day').at(0)).to.have.text('28');
+    expect(wrapper.find('.daypicker__day').at(1)).to.have.text('29');
+    expect(wrapper.find('.daypicker__day').at(2)).to.have.text('30');
   });
   it('should render the fixed amount of weeks', () => {
     const wrapper = mount(
       <DayPicker
+        className="daypicker"
         enableOutsideDays
         fixedWeeks
         initialMonth={new Date(2015, 1)}
       />
     );
-    expect(wrapper.find('.DayPicker-Day')).to.have.length(42);
+    expect(wrapper.find('.daypicker__day')).to.have.length(42);
   });
   it('should render the today button', () => {
     const wrapper = mount(
-      <DayPicker todayButton="foo" initialMonth={new Date(2015, 1)} />
+      <DayPicker
+        className="daypicker"
+        todayButton="foo"
+        initialMonth={new Date(2015, 1)}
+      />
     );
-    expect(wrapper.find('.DayPicker-Footer')).to.exists;
-    expect(wrapper.find('button.DayPicker-TodayButton')).to.have.text('foo');
+    expect(wrapper.find('.daypicker__footer')).to.exists;
+    expect(wrapper.find('button.daypicker__todayButton')).to.have.text('foo');
   });
   it('should render the week numbers', () => {
     const wrapper = mount(
-      <DayPicker showWeekNumbers initialMonth={new Date(2015, 1)} />
+      <DayPicker
+        className="daypicker"
+        showWeekNumbers
+        initialMonth={new Date(2015, 1)}
+      />
     );
-    expect(wrapper.find('.DayPicker-WeekNumber')).to.have.length(4);
-    expect(wrapper.find('.DayPicker-WeekNumber').at(1)).to.have.text('6');
+    expect(wrapper.find('.daypicker__weekNumber')).to.have.length(4);
+    expect(wrapper.find('.daypicker__weekNumber').at(1)).to.have.text('6');
   });
-  it('should use the specified class names', () => {
+  it.only('should use the specified class names', () => {
     const wrapper = mount(
       <DayPicker
+        className="daypicker"
         enableOutsideDays
         initialMonth={new Date(2015, 1)}
         classNames={{
-          ...classNames,
-          day: 'foo',
+          day: {
+            className: 'foo',
+          },
         }}
         modifiers={{
           bar: new Date(2015, 1, 10),
         }}
       />
     );
+    console.log(wrapper.html());
     expect(wrapper.find('.foo')).to.have.length(28);
     expect(wrapper.find('.bar')).to.have.length(1);
   });

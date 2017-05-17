@@ -36,7 +36,7 @@ function Day({
   if (empty) {
     return <div role="gridcell" aria-disabled {...style} />;
   }
-
+  console.log(modifiers, style.className);
   return (
     <div
       {...style}
@@ -104,7 +104,10 @@ const styled = defaultStyle(
       cursor: 'default',
     },
   },
-  ({ modifiers }) => modifiers.map(modifier => `&${modifier}`)
+  ({ modifiers }) =>
+    Object.keys(modifiers).map(
+      modifier => (modifiers[modifier] ? `&${modifier}` : undefined)
+    )
 );
 
 export default styled(Day);

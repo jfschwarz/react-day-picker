@@ -1,7 +1,6 @@
 import React from 'react';
 import { defaultStyle, PropTypes as SubstylePT } from 'substyle';
 import PropTypes from './PropTypes';
-import defaultClassNames from './classNames';
 
 function Navbar({
   showPreviousButton,

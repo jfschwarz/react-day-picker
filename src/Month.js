@@ -39,6 +39,10 @@ function Month({
     ? React.cloneElement(captionElement, captionProps)
     : React.createElement(captionElement, captionProps);
 
+  const finalWeekdayElement = React.isValidElement(weekdayElement)
+    ? React.cloneElement(weekdayElement, { ...style('weekday') })
+    : React.createElement(weekdayElement, { ...style('weekday') });
+
   const weeks = getWeekArray(month, firstDayOfWeek, fixedWeeks);
 
   return (
@@ -51,7 +55,7 @@ function Month({
         showWeekNumbers={showWeekNumbers}
         locale={locale}
         localeUtils={localeUtils}
-        weekdayElement={weekdayElement}
+        weekdayElement={finalWeekdayElement}
         style={style('weekdays')}
       />
       <div {...style('body')} role="rowgroup">

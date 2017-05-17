@@ -12,6 +12,7 @@ function handleDayClick(day, modifiers) {
   }
 }
 
+// TODO bring classNames into the right structure
 export default function CSSModules() {
   return (
     <DayPicker
