@@ -55,7 +55,7 @@ function Month({
 
 Month.propTypes = {
   month: PropTypes.instanceOf(Date).isRequired,
-  months: React.PropTypes.arrayOf(React.PropTypes.string),
+  months: PropTypes.arrayOf(PropTypes.string),
   captionElement: PropTypes.node.isRequired,
   firstDayOfWeek: PropTypes.number.isRequired,
   weekdaysLong: PropTypes.arrayOf(PropTypes.string),
