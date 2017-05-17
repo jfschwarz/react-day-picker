@@ -1,6 +1,6 @@
 {
   "name": "@signavio/react-day-picker",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "description": "Flexible date picker component for React",
   "main": "DayPicker.js",
   "browser": "./dist/DayPicker.js",
