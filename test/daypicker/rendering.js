@@ -8,7 +8,7 @@ import { spy } from 'sinon';
 
 import DayPicker from '../../src/DayPicker';
 
-describe.only('DayPicker’s rendering', () => {
+describe('DayPicker’s rendering', () => {
   it('should have default props', () => {
     const dayPicker = <DayPicker className="daypicker" />;
     const now = new Date();
@@ -395,7 +395,7 @@ describe.only('DayPicker’s rendering', () => {
     expect(wrapper.find('.daypicker__weekNumber')).to.have.length(4);
     expect(wrapper.find('.daypicker__weekNumber').at(1)).to.have.text('6');
   });
-  it.only('should use the specified class names', () => {
+  it('should use the specified class names', () => {
     const wrapper = mount(
       <DayPicker
         className="daypicker"
