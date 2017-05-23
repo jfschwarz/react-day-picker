@@ -7,13 +7,13 @@ import Navbar from '../src/Navbar';
 
 const shallow = element => enzymeShallow(element).first().shallow();
 
-describe.only('<Navbar />', () => {
+describe('<Navbar />', () => {
   it('should have default props', () => {
-    const navbar = enzymeShallow(<Navbar />)
-    
-    expect(navbar).to.have.prop('dir', 'ltr')
-    expect(navbar).to.have.prop('showPreviousButton', true)
-    expect(navbar).to.have.prop('showNextButton', true)
+    const navbar = enzymeShallow(<Navbar />);
+
+    expect(navbar).to.have.prop('dir', 'ltr');
+    expect(navbar).to.have.prop('showPreviousButton', true);
+    expect(navbar).to.have.prop('showNextButton', true);
   });
   it('should have the right class name', () => {
     const wrapper = shallow(<Navbar className="daypicker__navbar" />);
