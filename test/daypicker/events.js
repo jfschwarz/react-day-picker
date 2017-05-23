@@ -12,8 +12,9 @@ import { formatMonthTitle } from '../../src/LocaleUtils';
 describe('DayPicker’s events handlers', () => {
   it('should call the `onCaptionClick` handler', () => {
     const handleCaptionClick = spy();
-    const wrapper = mount(<DayPicker onCaptionClick={handleCaptionClick} />);
-    wrapper.find('.DayPicker-Caption').simulate('click');
+    const wrapper = mount(<DayPicker className="daypicker" onCaptionClick={handleCaptionClick} />);
+    expect(wrapper.find('.daypicker__month__caption')).to.have.length(1)
+    wrapper.find('.daypicker__month__caption').simulate('click');
     expect(handleCaptionClick).to.have.been.calledWith(
       sinon.match(
         date =>
@@ -35,6 +36,7 @@ describe('DayPicker’s events handlers', () => {
     const modifiers = { foo: d => d.getDate() === 15 };
     const wrapper = mount(
       <DayPicker
+        className="daypicker"
         modifiers={modifiers}
         onDayClick={handleDayClick}
         onDayMouseEnter={handleDayMouseEnter}
@@ -56,22 +58,22 @@ describe('DayPicker’s events handlers', () => {
       sinon.match(e => e instanceof SyntheticEvent && e.target !== null, 'e'),
     ];
 
-    wrapper.find('.DayPicker-Day--foo').simulate('click');
+    wrapper.find('.daypicker__day--foo').simulate('click');
     expect(handleDayClick).to.have.been.calledWith(...eventArgs);
 
-    wrapper.find('.DayPicker-Day--foo').simulate('mouseEnter');
+    wrapper.find('.daypicker__day--foo').simulate('mouseEnter');
     expect(handleDayMouseEnter).to.have.been.calledWith(...eventArgs);
 
-    wrapper.find('.DayPicker-Day--foo').simulate('mouseLeave');
+    wrapper.find('.daypicker__day--foo').simulate('mouseLeave');
     expect(handleDayMouseLeave).to.have.been.calledWith(...eventArgs);
 
-    wrapper.find('.DayPicker-Day--foo').simulate('keyDown');
+    wrapper.find('.daypicker__day--foo').simulate('keyDown');
     expect(handleDayKeyDown).to.have.been.calledWith(...eventArgs);
 
-    wrapper.find('.DayPicker-Day--foo').simulate('touchStart');
+    wrapper.find('.daypicker__day--foo').simulate('touchStart');
     expect(handleDayTouchStart).to.have.been.calledWith(...eventArgs);
 
-    wrapper.find('.DayPicker-Day--foo').simulate('touchEnd');
+    wrapper.find('.daypicker__day--foo').simulate('touchEnd');
     expect(handleDayTouchEnd).to.have.been.calledWith(...eventArgs);
   });
   it("should not call the day's cell event handlers for outside days", () => {
@@ -80,6 +82,7 @@ describe('DayPicker’s events handlers', () => {
     const handleDayMouseLeave = spy();
     const wrapper = mount(
       <DayPicker
+        className="daypicker"
         initialMonth={new Date(2015, 11, 5)}
         onDayClick={handleDayClick}
         onDayMouseEnter={handleDayMouseEnter}
@@ -87,20 +90,20 @@ describe('DayPicker’s events handlers', () => {
       />
     );
 
-    wrapper.find('.DayPicker-Day--outside').at(0).simulate('click');
+    wrapper.find('.daypicker__day--outside').at(0).simulate('click');
     expect(handleDayClick).to.not.have.been.called;
 
-    wrapper.find('.DayPicker-Day--outside').at(0).simulate('mouseEnter');
+    wrapper.find('.daypicker__day--outside').at(0).simulate('mouseEnter');
     expect(handleDayMouseEnter).to.not.have.been.called;
 
-    wrapper.find('.DayPicker-Day--outside').at(0).simulate('mouseLeave');
+    wrapper.find('.daypicker__day--outside').at(0).simulate('mouseLeave');
     expect(handleDayMouseLeave).to.not.have.been.called;
   });
   it('should call `onDayClick` event handler when pressing the ENTER key', () => {
     const handleDayClick = spy();
     const modifiers = { foo: d => d.getDate() === 15, bar: () => false };
     const wrapper = mount(
-      <DayPicker modifiers={modifiers} onDayClick={handleDayClick} />
+      <DayPicker className="daypicker" modifiers={modifiers} onDayClick={handleDayClick} />
     );
     const eventArgs = [
       sinon.match(
@@ -113,16 +116,16 @@ describe('DayPicker’s events handlers', () => {
       sinon.match(e => e instanceof SyntheticEvent && e.target !== null, 'e'),
     ];
     wrapper
-      .find('.DayPicker-Day--foo')
+      .find('.daypicker__day--foo')
       .simulate('keyDown', { keyCode: keys.ENTER });
     expect(handleDayClick).to.have.been.calledWith(...eventArgs);
   });
   it('should not call an undefined `onDayClick` event handler when pressing the ENTER key', () => {
     const handleDayClick = spy();
     const modifiers = { foo: d => d.getDate() === 15, bar: () => false };
-    const wrapper = mount(<DayPicker modifiers={modifiers} />);
+    const wrapper = mount(<DayPicker className="daypicker" modifiers={modifiers} />);
     wrapper
-      .find('.DayPicker-Day--foo')
+      .find('.daypicker__day--foo')
       .simulate('keyDown', { keyCode: keys.ENTER });
     expect(handleDayClick).to.not.have.been.called;
   });
@@ -130,7 +133,7 @@ describe('DayPicker’s events handlers', () => {
     const handleDayClick = spy();
     const modifiers = { foo: d => d.getDate() === 15 };
     const wrapper = mount(
-      <DayPicker modifiers={modifiers} onDayClick={handleDayClick} />
+      <DayPicker className="daypicker" modifiers={modifiers} onDayClick={handleDayClick} />
     );
     const eventArgs = [
       sinon.match(
@@ -143,7 +146,7 @@ describe('DayPicker’s events handlers', () => {
       sinon.match(e => e instanceof SyntheticEvent && e.target !== null, 'e'),
     ];
     wrapper
-      .find('.DayPicker-Day--foo')
+      .find('.daypicker__day--foo')
       .simulate('keyDown', { keyCode: keys.SPACE });
     expect(handleDayClick).to.have.been.calledWith(...eventArgs);
   });
@@ -167,7 +170,7 @@ describe('DayPicker’s events handlers', () => {
   });
   it('should display the current month when clicking the today button', () => {
     const wrapper = mount(
-      <DayPicker todayButton="foo" initialMonth={new Date(2015, 1)} />
+      <DayPicker className="daypicker" initialMonth={new Date(2015, 1)} />
     );
     wrapper.find('button.DayPicker-TodayButton').simulate('click');
     expect(wrapper.find('.DayPicker-Footer')).to.exists;
