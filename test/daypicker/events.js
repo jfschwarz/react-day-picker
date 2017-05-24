@@ -12,8 +12,10 @@ import { formatMonthTitle } from '../../src/LocaleUtils';
 describe('DayPicker’s events handlers', () => {
   it('should call the `onCaptionClick` handler', () => {
     const handleCaptionClick = spy();
-    const wrapper = mount(<DayPicker className="daypicker" onCaptionClick={handleCaptionClick} />);
-    expect(wrapper.find('.daypicker__month__caption')).to.have.length(1)
+    const wrapper = mount(
+      <DayPicker className="daypicker" onCaptionClick={handleCaptionClick} />
+    );
+    expect(wrapper.find('.daypicker__month__caption')).to.have.length(1);
     wrapper.find('.daypicker__month__caption').simulate('click');
     expect(handleCaptionClick).to.have.been.calledWith(
       sinon.match(
@@ -103,7 +105,11 @@ describe('DayPicker’s events handlers', () => {
     const handleDayClick = spy();
     const modifiers = { foo: d => d.getDate() === 15, bar: () => false };
     const wrapper = mount(
-      <DayPicker className="daypicker" modifiers={modifiers} onDayClick={handleDayClick} />
+      <DayPicker
+        className="daypicker"
+        modifiers={modifiers}
+        onDayClick={handleDayClick}
+      />
     );
     const eventArgs = [
       sinon.match(
@@ -123,7 +129,9 @@ describe('DayPicker’s events handlers', () => {
   it('should not call an undefined `onDayClick` event handler when pressing the ENTER key', () => {
     const handleDayClick = spy();
     const modifiers = { foo: d => d.getDate() === 15, bar: () => false };
-    const wrapper = mount(<DayPicker className="daypicker" modifiers={modifiers} />);
+    const wrapper = mount(
+      <DayPicker className="daypicker" modifiers={modifiers} />
+    );
     wrapper
       .find('.daypicker__day--foo')
       .simulate('keyDown', { keyCode: keys.ENTER });
@@ -133,7 +141,11 @@ describe('DayPicker’s events handlers', () => {
     const handleDayClick = spy();
     const modifiers = { foo: d => d.getDate() === 15 };
     const wrapper = mount(
-      <DayPicker className="daypicker" modifiers={modifiers} onDayClick={handleDayClick} />
+      <DayPicker
+        className="daypicker"
+        modifiers={modifiers}
+        onDayClick={handleDayClick}
+      />
     );
     const eventArgs = [
       sinon.match(

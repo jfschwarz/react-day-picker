@@ -3,32 +3,35 @@ import PropTypes from 'prop-types';
 
 import { isElement } from 'react-addons-test-utils';
 import { expect } from 'chai';
-import { shallow, mount, render } from 'enzyme';
+import { shallow as enzymeShallow, mount, render } from 'enzyme';
 import { spy } from 'sinon';
 
 import DayPicker from '../../src/DayPicker';
 
+const shallow = element => enzymeShallow(element).first().shallow();
+
 describe('DayPicker’s rendering', () => {
   it('should have default props', () => {
-    const dayPicker = <DayPicker className="daypicker" />;
+    const dayPicker = enzymeShallow(<DayPicker className="daypicker" />);
     const now = new Date();
-    expect(dayPicker.props.initialMonth.getMonth()).to.equal(now.getMonth());
-    expect(dayPicker.props.initialMonth.getYear()).to.equal(now.getYear());
-    expect(dayPicker.props.numberOfMonths).to.equal(1);
-    expect(dayPicker.props.locale).to.equal('en');
-    expect(dayPicker.props.enableOutsideDays).to.equal(false);
-    expect(dayPicker.props.fixedWeeks).to.equal(false);
-    expect(dayPicker.props.canChangeMonth).to.equal(true);
-    expect(dayPicker.props.reverseMonths).to.equal(false);
-    expect(dayPicker.props.pagedNavigation).to.equal(false);
-    expect(dayPicker.props.renderDay).to.be.a('Function');
-    expect(dayPicker.props.weekdayElement).to.be.a('object');
-    expect(dayPicker.props.navbarElement).to.be.a('object');
-    expect(dayPicker.props.tabIndex).to.equal(0);
+    
+    expect(dayPicker.props().initialMonth.getMonth()).to.equal(now.getMonth())
+    expect(dayPicker.props().initialMonth.getYear()).to.equal(now.getYear());
+    expect(dayPicker.props().numberOfMonths).to.equal(1);
+    expect(dayPicker.props().locale).to.equal('en');
+    expect(dayPicker.props().enableOutsideDays).to.equal(false);
+    expect(dayPicker.props().fixedWeeks).to.equal(false);
+    expect(dayPicker.props().canChangeMonth).to.equal(true);
+    expect(dayPicker.props().reverseMonths).to.equal(false);
+    expect(dayPicker.props().pagedNavigation).to.equal(false);
+    expect(dayPicker.props().renderDay).to.be.a('Function');
+    expect(dayPicker.props().weekdayElement).to.be.a('object');
+    expect(dayPicker.props().navbarElement).to.be.a('object');
+    expect(dayPicker.props().tabIndex).to.equal(0);
   });
   it('should have the right CSS classes and attributes', () => {
     const wrapper = shallow(<DayPicker className="daypicker" />);
-    expect(wrapper).to.have.className('daypicker');
+    expect(wrapper.find('.daypicker')).to.have.length(1);
     expect(wrapper).to.have.attr('lang', 'en');
     expect(wrapper).to.have.className('daypicker--interactionDisabled');
   });
@@ -95,10 +98,11 @@ describe('DayPicker’s rendering', () => {
         reverseMonths
       />
     );
-    expect(wrapper.find('.daypicker__caption').at(0)).to.have.text(
+
+    expect(wrapper.find('.daypicker__month__caption').at(0)).to.have.text(
       'February 2015'
     );
-    expect(wrapper.find('.daypicker__caption').at(1)).to.have.text(
+    expect(wrapper.find('.daypicker__month__caption').at(1)).to.have.text(
       'January 2015'
     );
   });
@@ -147,11 +151,11 @@ describe('DayPicker’s rendering', () => {
   });
   it('should render the aria labels', () => {
     const wrapper = render(<DayPicker className="daypicker" />);
-    expect(wrapper.find('.daypicker__navButton--prev')).to.have.attr(
+    expect(wrapper.find('.daypicker__navbar__button--prev')).to.have.attr(
       'aria-label',
       'Previous Month'
     );
-    expect(wrapper.find('.daypicker__navButton--next')).to.have.attr(
+    expect(wrapper.find('.daypicker__navbar__button--next')).to.have.attr(
       'aria-label',
       'Next Month'
     );
@@ -237,8 +241,8 @@ describe('DayPicker’s rendering', () => {
     expect(wrapper.find('.daypicker__navbar').at(0)).to.have.text('Navbar');
   });
   it('should render a custom navbar element as a function', () => {
-    const CustomNavbar = ({ className }) => (
-      <div className={className}>Navbar</div>
+    const CustomNavbar = ({ style }) => (
+      <div { ...style }>Navbar</div>
     );
     CustomNavbar.propTypes = { className: PropTypes.string };
     const wrapper = mount(
