@@ -401,7 +401,9 @@ describe('DayPicker’s rendering', () => {
       />
     );
     expect(wrapper.find('.daypicker__month__weekNumber')).to.have.length(4);
-    expect(wrapper.find('.daypicker__month__weekNumber').at(1)).to.have.text('6');
+    expect(wrapper.find('.daypicker__month__weekNumber').at(1)).to.have.text(
+      '6'
+    );
   });
   it('should use the specified class names', () => {
     const wrapper = mount(

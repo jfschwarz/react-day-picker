@@ -36,7 +36,6 @@ function Day({
   if (empty) {
     return <div role="gridcell" aria-disabled {...style} />;
   }
-  console.log(modifiers, style.className);
   return (
     <div
       {...style}

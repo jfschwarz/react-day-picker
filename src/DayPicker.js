@@ -533,7 +533,7 @@ class DayPicker extends Component {
         tabIndex={0}
         aria-label={this.props.todayButton}
         onClick={this.handleTodayButtonClick}
-        { ...this.props.style('todayButton')}
+        {...this.props.style('todayButton')}
       >
         {this.props.todayButton}
       </button>
