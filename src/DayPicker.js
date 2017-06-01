@@ -463,7 +463,6 @@ class DayPicker extends Component {
     dayModifiers.forEach(modifier => {
       modifiers[modifier] = true;
     });
-    console.log({ ...this.props.style('day') });
     return (
       <Day
         key={`${isOutside ? 'outside-' : ''}${key}`}
@@ -534,7 +533,7 @@ class DayPicker extends Component {
         tabIndex={0}
         aria-label={this.props.todayButton}
         onClick={this.handleTodayButtonClick}
-        style={this.props.style('todayButton')}
+        { ...this.props.style('todayButton')}
       >
         {this.props.todayButton}
       </button>
