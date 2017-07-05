@@ -96,6 +96,6 @@
   },
   "dependencies": {
     "prop-types": "^15.5.10",
-    "substyle": "^5.0.0"
+    "substyle": "^6.0.0"
   }
 }

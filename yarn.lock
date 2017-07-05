@@ -4523,9 +4523,9 @@ strip-json-comments@~1.0.1, strip-json-comments@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-1.0.4.tgz#1e15fbcac97d3ee99bf2d73b4c656b082bbafb91"
 
-substyle@^5.0.0:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/substyle/-/substyle-5.1.2.tgz#f501de4035e41a8073db9bc21ac3d9138caf1321"
+substyle@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/substyle/-/substyle-6.0.0.tgz#c648b2b5078773c814d809f4bf26763e7962add0"
   dependencies:
     hoist-non-react-statics "^1.2.0"
     invariant "^2.2.0"
